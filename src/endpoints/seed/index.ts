@@ -48,9 +48,10 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: (global === 'header'
+          ? { navItems: [] }
+          : { columns: [], socials: [], legalLinks: [] }) as any,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -245,31 +246,15 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        columns: [
           {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/3.x/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
+            title: 'Company',
+            links: [
+              { link: { type: 'custom', label: 'Admin', url: '/admin' } },
+            ],
           },
         ],
+        copyright: '© {year} All rights reserved.',
       },
     }),
   ])
