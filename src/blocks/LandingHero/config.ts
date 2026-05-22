@@ -55,7 +55,29 @@ export const LandingHero: Block = {
       relationTo: 'media',
       label: 'Hero image (optional)',
       admin: {
-        description: 'Shown on the right side. Leave empty for a text-only hero.',
+        description:
+          'Shown on the right side. Leave empty for a text-only hero. Ignored when a background video is set.',
+      },
+    },
+    {
+      name: 'videoBackground',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background video (optional)',
+      admin: {
+        description:
+          'Upload an .mp4 or .webm to use as a full-width background. When set, the hero switches to a centered overlay layout and the hero image is ignored.',
+      },
+    },
+    {
+      name: 'videoPoster',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Video poster image (optional)',
+      admin: {
+        description:
+          'Image shown before the background video loads (or if it fails to play). Only used when a background video is set.',
+        condition: (_, siblingData) => Boolean(siblingData?.videoBackground),
       },
     },
     {

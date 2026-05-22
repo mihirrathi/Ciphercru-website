@@ -1,5 +1,6 @@
-import clsx from 'clsx'
 import React from 'react'
+
+import { cn } from '@/utilities/ui'
 
 interface Props {
   className?: string
@@ -16,14 +17,14 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="CipherCRU"
+      width={100}
+      height={100}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-logo-light.svg"
+      className={cn('h-20 w-auto', className)}
+      src="/new text with logo (2).png"
     />
   )
 }

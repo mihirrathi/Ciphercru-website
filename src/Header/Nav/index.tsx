@@ -46,11 +46,24 @@ const getInheritedIcon = (item: MenuGroupItem): MediaType | null => {
   return null
 }
 
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
+export const HeaderNav: React.FC<{ data: HeaderType; isScrolled?: boolean }> = ({
+  data,
+  isScrolled = true,
+}) => {
   const navItems = data?.navItems || []
   const pathname = usePathname()
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const idleLinkClass = isScrolled
+    ? 'text-gray-600'
+    : 'text-white/90 drop-shadow-sm'
+  const activeLinkClass = isScrolled
+    ? 'text-blue-600'
+    : 'text-white drop-shadow-sm'
+  const hoverLinkClass = isScrolled
+    ? 'hover:text-blue-600'
+    : 'hover:text-white'
 
   const cancelClose = useCallback(() => {
     if (closeTimerRef.current) {
@@ -106,8 +119,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 aria-haspopup="true"
                 aria-expanded={isOpen}
                 className={cn(
-                  'inline-flex items-center gap-1 text-sm font-medium transition-colors hover:text-blue-600',
-                  isActive ? 'text-blue-600' : 'text-gray-600',
+                  'inline-flex items-center gap-1 text-sm font-medium transition-colors',
+                  hoverLinkClass,
+                  isActive ? activeLinkClass : idleLinkClass,
                 )}
               >
                 {item.menuLabel || 'Menu'}
@@ -231,10 +245,15 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             {...item.link}
             appearance="link"
             className={cn(
-              'text-sm font-medium transition-colors hover:text-blue-600',
+              'text-sm font-medium transition-colors',
+              hoverLinkClass,
               isActive
-                ? 'text-blue-600 border-b-2 border-blue-600 pb-0.5'
-                : 'text-gray-600',
+                ? cn(
+                    activeLinkClass,
+                    'border-b-2 pb-0.5',
+                    isScrolled ? 'border-blue-600' : 'border-white',
+                  )
+                : idleLinkClass,
             )}
           />
         )

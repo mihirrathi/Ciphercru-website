@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.84.1",
+    "@payloadcms/db-mongodb": "3.84.1",
+    "@payloadcms/email-nodemailer": "3.84.1",
     "@payloadcms/live-preview-react": "3.84.1",
     "@payloadcms/next": "3.84.1",
     "@payloadcms/plugin-form-builder": "3.84.1",
@@ -45,14 +47,14 @@
     "lucide-react": "0.563.0",
     "next": "16.2.6",
     "next-sitemap": "^4.2.3",
+    "nodemailer": "^8.0.7",
     "payload": "3.84.1",
     "prism-react-renderer": "^2.3.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "react-hook-form": "7.71.1",
     "sharp": "0.34.2",
-    "tailwind-merge": "^3.4.0",
-    "@payloadcms/db-mongodb": "3.84.1"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

@@ -14,6 +14,9 @@ importers:
       '@payloadcms/db-mongodb':
         specifier: 3.84.1
         version: 3.84.1(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))
+      '@payloadcms/email-nodemailer':
+        specifier: 3.84.1
+        version: 3.84.1(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))
       '@payloadcms/live-preview-react':
         specifier: 3.84.1
         version: 3.84.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -80,6 +83,9 @@ importers:
       next-sitemap:
         specifier: ^4.2.3
         version: 4.2.3(next@16.2.6(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))
+      nodemailer:
+        specifier: ^8.0.7
+        version: 8.0.7
       payload:
         specifier: 3.84.1
         version: 3.84.1(graphql@16.14.0)(typescript@5.7.3)
@@ -1148,6 +1154,12 @@ packages:
 
   '@payloadcms/db-mongodb@3.84.1':
     resolution: {integrity: sha512-HTP/Z6iQHFyHhuMImAC/GH0xGhjuvuHZHdB7crJUkXAyD677tp6C3mS8YB04s28bCteDqcXBYjHODZr5xDHBcw==}
+    peerDependencies:
+      payload: 3.84.1
+
+  '@payloadcms/email-nodemailer@3.84.1':
+    resolution: {integrity: sha512-pTXl9dfIoXLpdI2BbK0h64Y9I3RLGOG1QkWokSdCDWr+qkOiRkbO7W8dOEtK6Nh8eIwNOMJLA7Og3x4EbGMPxg==}
+    engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       payload: 3.84.1
 
@@ -3616,6 +3628,14 @@ packages:
   node-releases@2.0.44:
     resolution: {integrity: sha512-5WUyunoPMsvvEhS8AxHtRzP+oA8UCkJ7YRxatWKjngndhDGLiqEVAQKWjFAiAiuL8zMRGzGSJxFnLetoa43qGQ==}
 
+  nodemailer@7.0.12:
+    resolution: {integrity: sha512-H+rnK5bX2Pi/6ms3sN4/jRQvYSMltV6vqup/0SFOrxYYY/qoNvhXPlYq3e+Pm9RFJRwrMGbMIwi81M4dxpomhA==}
+    engines: {node: '>=6.0.0'}
+
+  nodemailer@8.0.7:
+    resolution: {integrity: sha512-pkjE4mkBzQjdJT4/UmlKl3pX0rC9fZmjh7c6C9o7lv66Ac6w9WCnzPzhbPNxwZAzlF4mdq4CSWB5+FbK6FWCow==}
+    engines: {node: '>=6.0.0'}
+
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -5533,6 +5553,11 @@ snapshots:
       - snappy
       - socks
       - supports-color
+
+  '@payloadcms/email-nodemailer@3.84.1(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))':
+    dependencies:
+      nodemailer: 7.0.12
+      payload: 3.84.1(graphql@16.14.0)(typescript@5.7.3)
 
   '@payloadcms/graphql@3.84.1(graphql@16.14.0)(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
@@ -8264,6 +8289,10 @@ snapshots:
       semver: 6.3.1
 
   node-releases@2.0.44: {}
+
+  nodemailer@7.0.12: {}
+
+  nodemailer@8.0.7: {}
 
   normalize-path@3.0.0: {}
 

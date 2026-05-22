@@ -1,4 +1,5 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -61,6 +62,25 @@ export default buildConfig({
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
+  }),
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'no-reply@ciphercru.com',
+    defaultFromName: process.env.SMTP_FROM_NAME || 'CipherCru',
+    // If SMTP_HOST is unset, the adapter falls back to Ethereal — a test inbox
+    // that doesn't deliver mail but prints a preview URL to the console.
+    ...(process.env.SMTP_HOST
+      ? {
+          transportOptions: {
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT) || 587,
+            secure: process.env.SMTP_PORT === '465',
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASSWORD,
+            },
+          },
+        }
+      : {}),
   }),
   collections: [Pages, Posts, Services, Projects, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

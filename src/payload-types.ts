@@ -1155,8 +1155,16 @@ export interface Form {
  * via the `definition` "ContactSectionBlock".
  */
 export interface ContactSectionBlock {
-  addressHeading?: string | null;
-  addressIntro?: {
+  /**
+   * Small uppercase label shown above the heading.
+   */
+  eyebrow?: string | null;
+  headingPrimary?: string | null;
+  /**
+   * Rendered in the brand blue color.
+   */
+  headingHighlight?: string | null;
+  description?: {
     root: {
       type: string;
       children: {
@@ -1171,6 +1179,8 @@ export interface ContactSectionBlock {
     };
     [k: string]: unknown;
   } | null;
+  phone?: string | null;
+  email?: string | null;
   companyName?: string | null;
   addressLine1?: string | null;
   addressLine2?: string | null;
@@ -1178,11 +1188,29 @@ export interface ContactSectionBlock {
   stateRegion?: string | null;
   postalCode?: string | null;
   country?: string | null;
-  email?: string | null;
-  phone?: string | null;
   mapLink?: string | null;
+  workingHoursTitle?: string | null;
+  workingHours?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  showSupportCard?: boolean | null;
+  supportTitle?: string | null;
+  supportSubtitle?: string | null;
+  supportButtonLabel?: string | null;
+  supportButtonLink?: string | null;
   formHeading?: string | null;
+  formSubheading?: string | null;
+  /**
+   * Use field names like fullName, email, phone, company, subject, message so the icons render correctly.
+   */
   form: string | Form;
+  showAgreement?: boolean | null;
+  privacyPolicyUrl?: string | null;
+  termsUrl?: string | null;
+  safetyNote?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contactSection';
@@ -1192,7 +1220,13 @@ export interface ContactSectionBlock {
  * via the `definition` "AboutSectionBlock".
  */
 export interface AboutSectionBlock {
+  /**
+   * e.g. "About Us"
+   */
   eyebrow?: string | null;
+  /**
+   * Wrap part of the heading in **double asterisks** to highlight it in brand blue. Example: "Turning Ideas into **Intelligent Solutions**".
+   */
   heading?: string | null;
   content?: {
     root: {
@@ -1210,7 +1244,44 @@ export interface AboutSectionBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Optional call-to-action buttons shown under the content.
+   * Bulleted highlights shown under the body (e.g. "Client-Centric Approach", "Innovation Driven").
+   */
+  features?:
+    | {
+        icon:
+          | 'users'
+          | 'userCheck'
+          | 'rocket'
+          | 'lightbulb'
+          | 'sparkles'
+          | 'star'
+          | 'shieldCheck'
+          | 'lock'
+          | 'building'
+          | 'briefcase'
+          | 'award'
+          | 'trophy'
+          | 'code'
+          | 'cpu'
+          | 'settings'
+          | 'heart'
+          | 'target'
+          | 'trendingUp'
+          | 'barChart'
+          | 'globe'
+          | 'zap'
+          | 'clock'
+          | 'checkCircle'
+          | 'messageCircle'
+          | 'layers'
+          | 'handshake';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional call-to-action buttons (e.g. a "Know More About Us" link).
    */
   links?:
     | {
@@ -1249,6 +1320,93 @@ export interface AboutSectionBlock {
    * Switch sides if you want to alternate sections on a page.
    */
   imagePosition?: ('right' | 'left') | null;
+  /**
+   * Optional blue card that overlays the bottom of the image. Leave the text empty to hide it.
+   */
+  floatingCard?: {
+    icon?:
+      | (
+          | 'users'
+          | 'userCheck'
+          | 'rocket'
+          | 'lightbulb'
+          | 'sparkles'
+          | 'star'
+          | 'shieldCheck'
+          | 'lock'
+          | 'building'
+          | 'briefcase'
+          | 'award'
+          | 'trophy'
+          | 'code'
+          | 'cpu'
+          | 'settings'
+          | 'heart'
+          | 'target'
+          | 'trendingUp'
+          | 'barChart'
+          | 'globe'
+          | 'zap'
+          | 'clock'
+          | 'checkCircle'
+          | 'messageCircle'
+          | 'layers'
+          | 'handshake'
+        )
+      | null;
+    /**
+     * e.g. "Building digital solutions that empower businesses and enrich lives."
+     */
+    text?: string | null;
+  };
+  showStats?: boolean | null;
+  /**
+   * Metric callouts shown in the strip below the about content.
+   */
+  stats?:
+    | {
+        icon:
+          | 'users'
+          | 'userCheck'
+          | 'rocket'
+          | 'lightbulb'
+          | 'sparkles'
+          | 'star'
+          | 'shieldCheck'
+          | 'lock'
+          | 'building'
+          | 'briefcase'
+          | 'award'
+          | 'trophy'
+          | 'code'
+          | 'cpu'
+          | 'settings'
+          | 'heart'
+          | 'target'
+          | 'trendingUp'
+          | 'barChart'
+          | 'globe'
+          | 'zap'
+          | 'clock'
+          | 'checkCircle'
+          | 'messageCircle'
+          | 'layers'
+          | 'handshake';
+        /**
+         * e.g. "50+", "120+", "99.9%"
+         */
+        value: string;
+        /**
+         * e.g. "Happy Clients", "Projects Delivered"
+         */
+        label: string;
+        /**
+         * e.g. "Across diverse industries"
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'aboutSection';
@@ -1426,9 +1584,17 @@ export interface LandingHeroBlock {
       }[]
     | null;
   /**
-   * Shown on the right side. Leave empty for a text-only hero.
+   * Shown on the right side. Leave empty for a text-only hero. Ignored when a background video is set.
    */
   image?: (string | null) | Media;
+  /**
+   * Upload an .mp4 or .webm to use as a full-width background. When set, the hero switches to a centered overlay layout and the hero image is ignored.
+   */
+  videoBackground?: (string | null) | Media;
+  /**
+   * Image shown before the background video loads (or if it fails to play). Only used when a background video is set.
+   */
+  videoPoster?: (string | null) | Media;
   /**
    * Small note below the CTAs, e.g. "No credit card required • 14-day free trial".
    */
@@ -1819,6 +1985,8 @@ export interface LandingHeroBlockSelect<T extends boolean = true> {
         id?: T;
       };
   image?: T;
+  videoBackground?: T;
+  videoPoster?: T;
   trustText?: T;
   background?: T;
   introContent?: T;
@@ -1977,8 +2145,12 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "ContactSectionBlock_select".
  */
 export interface ContactSectionBlockSelect<T extends boolean = true> {
-  addressHeading?: T;
-  addressIntro?: T;
+  eyebrow?: T;
+  headingPrimary?: T;
+  headingHighlight?: T;
+  description?: T;
+  phone?: T;
+  email?: T;
   companyName?: T;
   addressLine1?: T;
   addressLine2?: T;
@@ -1986,11 +2158,26 @@ export interface ContactSectionBlockSelect<T extends boolean = true> {
   stateRegion?: T;
   postalCode?: T;
   country?: T;
-  email?: T;
-  phone?: T;
   mapLink?: T;
+  workingHoursTitle?: T;
+  workingHours?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  showSupportCard?: T;
+  supportTitle?: T;
+  supportSubtitle?: T;
+  supportButtonLabel?: T;
+  supportButtonLink?: T;
   formHeading?: T;
+  formSubheading?: T;
   form?: T;
+  showAgreement?: T;
+  privacyPolicyUrl?: T;
+  termsUrl?: T;
+  safetyNote?: T;
   id?: T;
   blockName?: T;
 }
@@ -2002,6 +2189,14 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   content?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   links?:
     | T
     | {
@@ -2019,6 +2214,22 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
       };
   image?: T;
   imagePosition?: T;
+  floatingCard?:
+    | T
+    | {
+        icon?: T;
+        text?: T;
+      };
+  showStats?: T;
+  stats?:
+    | T
+    | {
+        icon?: T;
+        value?: T;
+        label?: T;
+        caption?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
