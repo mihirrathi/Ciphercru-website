@@ -6,6 +6,7 @@ import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { AnimatedNumber } from '@/components/AnimatedNumber'
 import {
   Users,
   UserCheck,
@@ -251,9 +252,10 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                     <Icon name={stat.icon} className="w-7 h-7 lg:w-8 lg:h-8" />
                   </div>
                   <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-brand leading-none">
-                      {stat.value}
-                    </div>
+                    <AnimatedNumber
+                      value={stat.value}
+                      className="block text-3xl lg:text-4xl font-bold text-brand leading-none tabular-nums"
+                    />
                     <div className="mt-1.5 text-sm lg:text-base font-semibold text-gray-900">
                       {stat.label}
                     </div>

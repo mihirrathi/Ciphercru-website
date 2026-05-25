@@ -3,6 +3,7 @@ import React from 'react'
 import type { StatsBlock as StatsBlockProps } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
+import { AnimatedNumber } from '@/components/AnimatedNumber'
 
 export const StatsBlock: React.FC<StatsBlockProps> = ({
   eyebrow,
@@ -75,16 +76,15 @@ export const StatsBlock: React.FC<StatsBlockProps> = ({
           <div className={cn('grid gap-8 lg:gap-12', grid)}>
             {items.map((item, i) => (
               <div key={i} className="text-center">
-                <div
+                <AnimatedNumber
+                  value={item.value}
                   className={cn(
-                    'text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-none',
+                    'block text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-none tabular-nums',
                     isBrand
                       ? 'bg-linear-to-r from-white to-blue-100 bg-clip-text text-transparent'
                       : 'text-brand',
                   )}
-                >
-                  {item.value}
-                </div>
+                />
                 <div
                   className={cn(
                     'mt-3 text-sm font-medium',

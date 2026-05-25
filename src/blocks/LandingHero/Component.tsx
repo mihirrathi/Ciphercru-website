@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { motion, type Variants } from 'framer-motion'
 
 import type { LandingHeroBlock as LandingHeroBlockProps } from '@/payload-types'
 
@@ -6,6 +9,32 @@ import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+const imageVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.94, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+  },
+}
 
 const renderHeading = (raw: string) => {
   const parts = raw.split(/(\*\*[^*]+\*\*)/g)
@@ -104,35 +133,55 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
         />
 
         <div className="container py-24 lg:py-32 w-full">
-          <div className="mx-auto max-w-4xl text-center text-white">
+          <motion.div
+            className="mx-auto max-w-4xl text-center text-white"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {badge && (
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-3.5 py-1.5 text-xs sm:text-[0.8rem] tracking-[0.16em] font-semibold text-white uppercase mb-6">
+              <motion.div
+                variants={itemVariants}
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-3.5 py-1.5 text-xs sm:text-[0.8rem] tracking-[0.16em] font-semibold text-white uppercase mb-6"
+              >
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inset-0 rounded-full bg-blue-300 opacity-75 animate-ping" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-300" />
                 </span>
                 {badge}
-              </div>
+              </motion.div>
             )}
 
-            <h1 className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-bold tracking-tight uppercase leading-[1.15] drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-bold tracking-tight uppercase leading-[1.15] drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
+            >
               {renderHeading(heading)}
-            </h1>
+            </motion.h1>
 
             {subheading && (
-              <p className="mt-6 mx-auto max-w-2xl text-base lg:text-lg text-white/85 leading-relaxed">
+              <motion.p
+                variants={itemVariants}
+                className="mt-6 mx-auto max-w-2xl text-base lg:text-lg text-white/85 leading-relaxed"
+              >
                 {subheading}
-              </p>
+              </motion.p>
             )}
 
             {introContent && (
-              <div className="mt-6 mx-auto max-w-2xl text-white/85">
+              <motion.div
+                variants={itemVariants}
+                className="mt-6 mx-auto max-w-2xl text-white/85"
+              >
                 <RichText data={introContent} enableGutter={false} />
-              </div>
+              </motion.div>
             )}
 
             {Array.isArray(links) && links.length > 0 && (
-              <div className="mt-10 flex flex-wrap gap-4 justify-center">
+              <motion.div
+                variants={itemVariants}
+                className="mt-10 flex flex-wrap gap-4 justify-center"
+              >
                 {links.map(({ link }, i) => (
                   <CMSLink
                     key={i}
@@ -145,11 +194,14 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                     )}
                   />
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {trustText && (
-              <div className="mt-8 flex items-center justify-center gap-2.5 text-sm text-white/75">
+              <motion.div
+                variants={itemVariants}
+                className="mt-8 flex items-center justify-center gap-2.5 text-sm text-white/75"
+              >
                 <svg
                   aria-hidden
                   viewBox="0 0 24 24"
@@ -164,9 +216,9 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                   <path d="M9 12l2 2 4-4" />
                 </svg>
                 <p>{trustText}</p>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
     )
@@ -202,9 +254,15 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
           )}
         >
           {/* LEFT — content */}
-          <div className={cn('relative', !image && 'mx-auto max-w-3xl')}>
+          <motion.div
+            className={cn('relative', !image && 'mx-auto max-w-3xl')}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {badge && (
-              <div
+              <motion.div
+                variants={itemVariants}
                 className={cn(
                   'inline-flex items-center gap-2 rounded-full border border-brand/20 bg-white/70 backdrop-blur px-3.5 py-1.5 text-xs sm:text-[0.8rem] tracking-[0.16em] font-semibold text-brand uppercase mb-6 shadow-sm shadow-blue-100/60',
                 )}
@@ -214,27 +272,34 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
                 </span>
                 {badge}
-              </div>
+              </motion.div>
             )}
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-gray-900 uppercase leading-[1.02]">
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-gray-900 uppercase leading-[1.02]"
+            >
               {renderHeading(heading)}
-            </h1>
+            </motion.h1>
 
             {subheading && (
-              <p className="mt-6 text-base lg:text-lg text-gray-600 leading-relaxed max-w-xl">
+              <motion.p
+                variants={itemVariants}
+                className="mt-6 text-base lg:text-lg text-gray-600 leading-relaxed max-w-xl"
+              >
                 {subheading}
-              </p>
+              </motion.p>
             )}
 
             {introContent && (
-              <div className="mt-6 max-w-xl text-gray-600">
+              <motion.div variants={itemVariants} className="mt-6 max-w-xl text-gray-600">
                 <RichText data={introContent} enableGutter={false} />
-              </div>
+              </motion.div>
             )}
 
             {Array.isArray(links) && links.length > 0 && (
-              <div
+              <motion.div
+                variants={itemVariants}
                 className={cn(
                   'mt-10 flex flex-wrap gap-4',
                   !image && 'justify-center',
@@ -252,11 +317,14 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                     )}
                   />
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {trustText && (
-              <div className="mt-8 flex items-center gap-2.5 text-sm text-gray-500">
+              <motion.div
+                variants={itemVariants}
+                className="mt-8 flex items-center gap-2.5 text-sm text-gray-500"
+              >
                 <svg
                   aria-hidden
                   viewBox="0 0 24 24"
@@ -271,13 +339,18 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                   <path d="M9 12l2 2 4-4" />
                 </svg>
                 <p>{trustText}</p>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
 
           {/* RIGHT — image + geometric backdrop */}
           {image && (
-            <div className="relative">
+            <motion.div
+              className="relative"
+              variants={imageVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {/* Soft blur halo behind the whole composition */}
               <div
                 aria-hidden
@@ -345,7 +418,7 @@ export const LandingHeroBlock: React.FC<LandingHeroBlockProps> = ({
                   </svg>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

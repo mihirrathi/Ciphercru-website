@@ -1417,23 +1417,19 @@ export interface AboutSectionBlock {
  */
 export interface TestimonialsBlock {
   eyebrow?: string | null;
+  /**
+   * Wrap part of the heading in **double asterisks** to highlight it in brand blue. Example: "What Our Clients Say **About Us**".
+   */
   heading?: string | null;
-  intro?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  layout?: ('grid-2' | 'grid-3') | null;
+  /**
+   * Short paragraph under the heading.
+   */
+  intro?: string | null;
+  perSlide?: ('2' | '3') | null;
+  /**
+   * Slides advance automatically every few seconds.
+   */
+  autoplay?: boolean | null;
   items?:
     | {
         quote: string;
@@ -1442,6 +1438,7 @@ export interface TestimonialsBlock {
         authorRole?: string | null;
         authorCompany?: string | null;
         authorPhoto?: (string | null) | Media;
+        companyLogo?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1455,11 +1452,18 @@ export interface TestimonialsBlock {
  */
 export interface FAQBlock {
   eyebrow?: string | null;
+  /**
+   * Wrap part of the heading in **double asterisks** to highlight it in brand blue. Example: "Frequently Asked **Questions**".
+   */
   heading?: string | null;
   /**
    * One short paragraph under the heading.
    */
   intro?: string | null;
+  /**
+   * Image shown on the left side under the heading (e.g. a 3D character or graphic).
+   */
+  illustration?: (string | null) | Media;
   layout?: ('split' | 'stacked') | null;
   /**
    * If unchecked, opening one question closes the others.
@@ -1467,6 +1471,34 @@ export interface FAQBlock {
   allowMultipleOpen?: boolean | null;
   items?:
     | {
+        icon?:
+          | (
+              | 'messageCircleQuestion'
+              | 'users'
+              | 'dollarSign'
+              | 'code'
+              | 'shieldCheck'
+              | 'headphones'
+              | 'helpCircle'
+              | 'info'
+              | 'clock'
+              | 'rocket'
+              | 'sparkles'
+              | 'star'
+              | 'lightbulb'
+              | 'settings'
+              | 'globe'
+              | 'zap'
+              | 'checkCircle'
+              | 'messageCircle'
+              | 'briefcase'
+              | 'handshake'
+              | 'target'
+              | 'trendingUp'
+              | 'fileText'
+              | 'lock'
+            )
+          | null;
         question: string;
         answer: {
           root: {
@@ -1488,10 +1520,38 @@ export interface FAQBlock {
       }[]
     | null;
   /**
-   * Shown under the questions, e.g. "Still have questions? Contact us".
+   * Small card shown under the illustration on the left, e.g. "Still have questions? Contact us".
    */
   footer?: {
     enabled?: boolean | null;
+    icon?:
+      | (
+          | 'messageCircleQuestion'
+          | 'users'
+          | 'dollarSign'
+          | 'code'
+          | 'shieldCheck'
+          | 'headphones'
+          | 'helpCircle'
+          | 'info'
+          | 'clock'
+          | 'rocket'
+          | 'sparkles'
+          | 'star'
+          | 'lightbulb'
+          | 'settings'
+          | 'globe'
+          | 'zap'
+          | 'checkCircle'
+          | 'messageCircle'
+          | 'briefcase'
+          | 'handshake'
+          | 'target'
+          | 'trendingUp'
+          | 'fileText'
+          | 'lock'
+        )
+      | null;
     text?: string | null;
     subtext?: string | null;
     links?:
@@ -1527,6 +1587,41 @@ export interface FAQBlock {
         }[]
       | null;
   };
+  /**
+   * Small feature highlights shown in a row below the FAQ (e.g. "Quick Answers", "Reliable Information"). Leave empty to hide.
+   */
+  features?:
+    | {
+        icon:
+          | 'messageCircleQuestion'
+          | 'users'
+          | 'dollarSign'
+          | 'code'
+          | 'shieldCheck'
+          | 'headphones'
+          | 'helpCircle'
+          | 'info'
+          | 'clock'
+          | 'rocket'
+          | 'sparkles'
+          | 'star'
+          | 'lightbulb'
+          | 'settings'
+          | 'globe'
+          | 'zap'
+          | 'checkCircle'
+          | 'messageCircle'
+          | 'briefcase'
+          | 'handshake'
+          | 'target'
+          | 'trendingUp'
+          | 'fileText'
+          | 'lock';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'faq';
@@ -2241,7 +2336,8 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   intro?: T;
-  layout?: T;
+  perSlide?: T;
+  autoplay?: T;
   items?:
     | T
     | {
@@ -2251,6 +2347,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         authorRole?: T;
         authorCompany?: T;
         authorPhoto?: T;
+        companyLogo?: T;
         id?: T;
       };
   id?: T;
@@ -2264,11 +2361,13 @@ export interface FAQBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   intro?: T;
+  illustration?: T;
   layout?: T;
   allowMultipleOpen?: T;
   items?:
     | T
     | {
+        icon?: T;
         question?: T;
         answer?: T;
         defaultOpen?: T;
@@ -2278,6 +2377,7 @@ export interface FAQBlockSelect<T extends boolean = true> {
     | T
     | {
         enabled?: T;
+        icon?: T;
         text?: T;
         subtext?: T;
         links?:
@@ -2295,6 +2395,14 @@ export interface FAQBlockSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+      };
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;

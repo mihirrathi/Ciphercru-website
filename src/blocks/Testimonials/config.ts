@@ -1,12 +1,5 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 export const Testimonials: Block = {
   slug: 'testimonials',
   interfaceName: 'TestimonialsBlock',
@@ -15,35 +8,46 @@ export const Testimonials: Block = {
       name: 'eyebrow',
       type: 'text',
       label: 'Eyebrow (small label above heading)',
+      defaultValue: 'Testimonials',
     },
     {
       name: 'heading',
       type: 'text',
       label: 'Heading',
-      defaultValue: 'What our clients say',
+      defaultValue: 'What Our Clients Say **About Us**',
+      admin: {
+        description:
+          'Wrap part of the heading in **double asterisks** to highlight it in brand blue. Example: "What Our Clients Say **About Us**".',
+      },
     },
     {
       name: 'intro',
-      type: 'richText',
+      type: 'textarea',
       label: 'Intro (optional)',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => [
-          ...rootFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-        ],
-      }),
+      defaultValue:
+        "We take pride in delivering exceptional solutions that help businesses grow. Here's what our clients have to say about working with us.",
+      admin: {
+        description: 'Short paragraph under the heading.',
+      },
     },
     {
-      name: 'layout',
+      name: 'perSlide',
       type: 'select',
-      label: 'Layout',
-      defaultValue: 'grid-3',
+      label: 'Cards per slide (desktop)',
+      defaultValue: '3',
       options: [
-        { label: '2 columns', value: 'grid-2' },
-        { label: '3 columns', value: 'grid-3' },
+        { label: '2 cards', value: '2' },
+        { label: '3 cards', value: '3' },
       ],
+    },
+    {
+      name: 'autoplay',
+      type: 'checkbox',
+      label: 'Auto-rotate slides',
+      defaultValue: true,
+      admin: {
+        description: 'Slides advance automatically every few seconds.',
+      },
     },
     {
       name: 'items',
@@ -97,10 +101,23 @@ export const Testimonials: Block = {
           label: 'Company (optional)',
         },
         {
-          name: 'authorPhoto',
-          type: 'upload',
-          relationTo: 'media',
-          label: 'Author photo (optional)',
+          type: 'row',
+          fields: [
+            {
+              name: 'authorPhoto',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Author photo',
+              admin: { width: '50%' },
+            },
+            {
+              name: 'companyLogo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Company logo (optional)',
+              admin: { width: '50%' },
+            },
+          ],
         },
       ],
     },

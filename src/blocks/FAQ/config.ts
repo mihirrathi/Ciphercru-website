@@ -9,6 +9,33 @@ import {
 
 import { linkGroup } from '../../fields/linkGroup'
 
+const iconOptions = [
+  { label: 'Message Circle Question', value: 'messageCircleQuestion' },
+  { label: 'Users (team)', value: 'users' },
+  { label: 'Dollar / Pricing', value: 'dollarSign' },
+  { label: 'Code', value: 'code' },
+  { label: 'Shield (security)', value: 'shieldCheck' },
+  { label: 'Headphones (support)', value: 'headphones' },
+  { label: 'Help Circle', value: 'helpCircle' },
+  { label: 'Info', value: 'info' },
+  { label: 'Clock', value: 'clock' },
+  { label: 'Rocket', value: 'rocket' },
+  { label: 'Sparkles', value: 'sparkles' },
+  { label: 'Star', value: 'star' },
+  { label: 'Lightbulb', value: 'lightbulb' },
+  { label: 'Settings', value: 'settings' },
+  { label: 'Globe', value: 'globe' },
+  { label: 'Zap', value: 'zap' },
+  { label: 'Check Circle', value: 'checkCircle' },
+  { label: 'Message Circle', value: 'messageCircle' },
+  { label: 'Briefcase', value: 'briefcase' },
+  { label: 'Handshake', value: 'handshake' },
+  { label: 'Target', value: 'target' },
+  { label: 'Trending Up', value: 'trendingUp' },
+  { label: 'File Text', value: 'fileText' },
+  { label: 'Lock', value: 'lock' },
+]
+
 export const FAQ: Block = {
   slug: 'faq',
   interfaceName: 'FAQBlock',
@@ -23,7 +50,11 @@ export const FAQ: Block = {
       name: 'heading',
       type: 'text',
       label: 'Heading',
-      defaultValue: 'Frequently asked questions',
+      defaultValue: 'Frequently Asked **Questions**',
+      admin: {
+        description:
+          'Wrap part of the heading in **double asterisks** to highlight it in brand blue. Example: "Frequently Asked **Questions**".',
+      },
     },
     {
       name: 'intro',
@@ -34,12 +65,22 @@ export const FAQ: Block = {
       },
     },
     {
+      name: 'illustration',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Illustration (optional)',
+      admin: {
+        description:
+          'Image shown on the left side under the heading (e.g. a 3D character or graphic).',
+      },
+    },
+    {
       name: 'layout',
       type: 'select',
       label: 'Layout',
       defaultValue: 'split',
       options: [
-        { label: 'Split — heading left, questions right', value: 'split' },
+        { label: 'Split — heading + illustration left, questions right', value: 'split' },
         { label: 'Stacked — heading on top, questions below (centered)', value: 'stacked' },
       ],
     },
@@ -60,6 +101,13 @@ export const FAQ: Block = {
       minRows: 1,
       admin: { initCollapsed: true },
       fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          label: 'Icon',
+          options: iconOptions,
+          defaultValue: 'messageCircleQuestion',
+        },
         {
           name: 'question',
           type: 'text',
@@ -91,16 +139,27 @@ export const FAQ: Block = {
     {
       name: 'footer',
       type: 'group',
-      label: 'Bottom CTA (optional)',
+      label: 'Side CTA card (under illustration)',
       admin: {
-        description: 'Shown under the questions, e.g. "Still have questions? Contact us".',
+        description:
+          'Small card shown under the illustration on the left, e.g. "Still have questions? Contact us".',
       },
       fields: [
         {
           name: 'enabled',
           type: 'checkbox',
-          label: 'Show bottom CTA',
-          defaultValue: false,
+          label: 'Show CTA card',
+          defaultValue: true,
+        },
+        {
+          name: 'icon',
+          type: 'select',
+          label: 'Icon',
+          options: iconOptions,
+          defaultValue: 'headphones',
+          admin: {
+            condition: (_, siblingData) => Boolean(siblingData?.enabled),
+          },
         },
         {
           name: 'text',
@@ -115,7 +174,7 @@ export const FAQ: Block = {
           name: 'subtext',
           type: 'text',
           label: 'Subtext',
-          defaultValue: "Can't find what you're looking for? Our team is here to help.",
+          defaultValue: 'Our support team is here to help you.',
           admin: {
             condition: (_, siblingData) => Boolean(siblingData?.enabled),
           },
@@ -130,6 +189,37 @@ export const FAQ: Block = {
             },
           },
         }),
+      ],
+    },
+    {
+      name: 'features',
+      type: 'array',
+      label: 'Bottom feature strip (optional)',
+      maxRows: 4,
+      admin: {
+        description:
+          'Small feature highlights shown in a row below the FAQ (e.g. "Quick Answers", "Reliable Information"). Leave empty to hide.',
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          required: true,
+          options: iconOptions,
+          defaultValue: 'clock',
+        },
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          label: 'Title',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          label: 'Description',
+        },
       ],
     },
   ],
