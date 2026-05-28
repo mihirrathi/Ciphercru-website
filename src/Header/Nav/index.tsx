@@ -46,22 +46,22 @@ const getInheritedIcon = (item: MenuGroupItem): MediaType | null => {
   return null
 }
 
-export const HeaderNav: React.FC<{ data: HeaderType; isScrolled?: boolean }> = ({
+export const HeaderNav: React.FC<{ data: HeaderType; darkText?: boolean }> = ({
   data,
-  isScrolled = true,
+  darkText = true,
 }) => {
   const navItems = data?.navItems || []
   const pathname = usePathname()
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const idleLinkClass = isScrolled
+  const idleLinkClass = darkText
     ? 'text-gray-600'
     : 'text-white/90 drop-shadow-sm'
-  const activeLinkClass = isScrolled
+  const activeLinkClass = darkText
     ? 'text-blue-600'
     : 'text-white drop-shadow-sm'
-  const hoverLinkClass = isScrolled
+  const hoverLinkClass = darkText
     ? 'hover:text-blue-600'
     : 'hover:text-white'
 
@@ -251,7 +251,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isScrolled?: boolean }> = (
                 ? cn(
                     activeLinkClass,
                     'border-b-2 pb-0.5',
-                    isScrolled ? 'border-blue-600' : 'border-white',
+                    darkText ? 'border-blue-600' : 'border-white',
                   )
                 : idleLinkClass,
             )}

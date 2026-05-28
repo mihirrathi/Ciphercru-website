@@ -1,3 +1,4 @@
+import { payloadCloudinaryPlugin } from '@jhb.software/payload-cloudinary-plugin'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -88,5 +89,25 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  payloadCloudinaryPlugin({
+    collections: {
+      // disablePayloadAccessControl makes the plugin emit direct Cloudinary URLs
+      // (https://res.cloudinary.com/...) on read instead of routing through
+      // /api/media/file/... Without this, the afterRead hook leaves the URL as
+      // the local access-controlled path even when the file is on Cloudinary.
+      media: {
+        disablePayloadAccessControl: true,
+      },
+    },
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME ?? '',
+    credentials: {
+      apiKey: process.env.CLOUDINARY_API_KEY ?? '',
+      apiSecret: process.env.CLOUDINARY_API_SECRET ?? '',
+    },
+    folder: 'company-website',
+    // Bypass Vercel's 4.5MB serverless body limit by uploading directly from the browser.
+    clientUploads: true,
+    useFilename: true,
   }),
 ]

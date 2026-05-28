@@ -116,10 +116,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'portfolio-page': PortfolioPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'portfolio-page': PortfolioPageSelect<false> | PortfolioPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -215,6 +217,7 @@ export interface Page {
   };
   layout: (
     | LandingHeroBlock
+    | LandingHeroV2Block
     | LogoMarqueeBlock
     | StatsBlock
     | FeaturesBlock
@@ -302,6 +305,7 @@ export interface Post {
  */
 export interface Media {
   id: string;
+  cloudinaryPublicId?: string | null;
   alt?: string | null;
   caption?: {
     root: {
@@ -574,20 +578,35 @@ export interface Service {
  */
 export interface Project {
   id: string;
+  /**
+   * Primary title shown in black, e.g. "FinDash – Smart".
+   */
   title: string;
+  /**
+   * Optional secondary title rendered in brand blue on a new line, e.g. "Financial Dashboard".
+   */
+  titleAccent?: string | null;
   client?: string | null;
+  /**
+   * e.g. "8 Weeks".
+   */
+  duration?: string | null;
+  /**
+   * e.g. "4 Members".
+   */
+  teamSize?: string | null;
   year?: number | null;
   /**
-   * Short description shown on the portfolio card (1–2 sentences).
+   * Short description shown on the portfolio card and at the top of the case study (1–2 sentences).
    */
   summary?: string | null;
   /**
-   * Used on the portfolio grid card and as the page header image.
+   * Used on the portfolio grid card and as the large device-mockup image in the case study header.
    */
   coverImage: string | Media;
   category: 'web' | 'mobile' | 'ai' | 'cloud' | 'design' | 'security' | 'ecommerce' | 'other';
   /**
-   * Technologies used, e.g. "React", "Node.js", "AWS".
+   * Technologies used, e.g. "React", "Node.js", "AWS". Shown as pill badges on the portfolio card.
    */
   tags?:
     | {
@@ -597,74 +616,235 @@ export interface Project {
     | null;
   liveUrl?: string | null;
   /**
-   * A one-line highlight, e.g. "+45% conversion".
+   * Optional. Renders the "View Source Code" button next to "Live Website".
+   */
+  sourceUrl?: string | null;
+  /**
+   * A one-line highlight overlaid on the cover image, e.g. "+45% conversion".
    */
   caseStudyHighlight?: string | null;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
+  /**
+   * Longer description shown on the left of the "Project Overview" section.
+   */
+  overview?: string | null;
+  /**
+   * Up to 4 headline numbers shown in the blue gradient card under the overview text.
+   */
+  highlightStats?:
+    | {
+        /**
+         * e.g. "40%", "2.5x".
+         */
+        value: string;
+        /**
+         * e.g. "More Efficiency".
+         */
+        label: string;
+        icon?:
+          | (
+              | 'target'
+              | 'lightbulb'
+              | 'trendingUp'
+              | 'rocket'
+              | 'shield'
+              | 'users'
+              | 'star'
+              | 'briefcase'
+              | 'globe'
+              | 'code'
+              | 'sparkles'
+              | 'zap'
+              | 'trophy'
+              | 'heart'
+              | 'check'
+              | 'gauge'
+              | 'fileText'
+              | 'wallet'
+              | 'userCog'
+              | 'barChart'
+              | 'lock'
+              | 'bell'
+              | 'settings'
+              | 'cloud'
+              | 'database'
+            )
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  challenge?: {
+    icon?:
+      | (
+          | 'target'
+          | 'lightbulb'
+          | 'trendingUp'
+          | 'rocket'
+          | 'shield'
+          | 'users'
+          | 'star'
+          | 'briefcase'
+          | 'globe'
+          | 'code'
+          | 'sparkles'
+          | 'zap'
+          | 'trophy'
+          | 'heart'
+          | 'check'
+          | 'gauge'
+          | 'fileText'
+          | 'wallet'
+          | 'userCog'
+          | 'barChart'
+          | 'lock'
+          | 'bell'
+          | 'settings'
+          | 'cloud'
+          | 'database'
+        )
+      | null;
+    heading?: string | null;
+    description?: string | null;
+  };
+  solution?: {
+    icon?:
+      | (
+          | 'target'
+          | 'lightbulb'
+          | 'trendingUp'
+          | 'rocket'
+          | 'shield'
+          | 'users'
+          | 'star'
+          | 'briefcase'
+          | 'globe'
+          | 'code'
+          | 'sparkles'
+          | 'zap'
+          | 'trophy'
+          | 'heart'
+          | 'check'
+          | 'gauge'
+          | 'fileText'
+          | 'wallet'
+          | 'userCog'
+          | 'barChart'
+          | 'lock'
+          | 'bell'
+          | 'settings'
+          | 'cloud'
+          | 'database'
+        )
+      | null;
+    heading?: string | null;
+    description?: string | null;
+  };
+  results?: {
+    icon?:
+      | (
+          | 'target'
+          | 'lightbulb'
+          | 'trendingUp'
+          | 'rocket'
+          | 'shield'
+          | 'users'
+          | 'star'
+          | 'briefcase'
+          | 'globe'
+          | 'code'
+          | 'sparkles'
+          | 'zap'
+          | 'trophy'
+          | 'heart'
+          | 'check'
+          | 'gauge'
+          | 'fileText'
+          | 'wallet'
+          | 'userCog'
+          | 'barChart'
+          | 'lock'
+          | 'bell'
+          | 'settings'
+          | 'cloud'
+          | 'database'
+        )
+      | null;
+    heading?: string | null;
+    items?:
       | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: string | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: string | Post;
-                } | null)
-              | ({
-                  relationTo: 'services';
-                  value: string | Service;
-                } | null)
-              | ({
-                  relationTo: 'projects';
-                  value: string | Project;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
+          text: string;
           id?: string | null;
         }[]
       | null;
-    media?: (string | null) | Media;
   };
-  layout: (
-    | LogoMarqueeBlock
-    | StatsBlock
-    | FeaturesBlock
-    | CallToActionBlock
-    | ContentBlock
-    | MediaBlock
-    | ArchiveBlock
-    | FormBlock
-    | ContactSectionBlock
-    | AboutSectionBlock
-    | TestimonialsBlock
-    | FAQBlock
-  )[];
+  technologiesHeading?: string | null;
+  /**
+   * Tools/libraries shown with a logo and name in the left card.
+   */
+  technologies?:
+    | {
+        name: string;
+        logo?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  keyFeaturesHeading?: string | null;
+  /**
+   * Up to ~6 product features, each rendered as an icon card.
+   */
+  keyFeatures?:
+    | {
+        icon?:
+          | (
+              | 'target'
+              | 'lightbulb'
+              | 'trendingUp'
+              | 'rocket'
+              | 'shield'
+              | 'users'
+              | 'star'
+              | 'briefcase'
+              | 'globe'
+              | 'code'
+              | 'sparkles'
+              | 'zap'
+              | 'trophy'
+              | 'heart'
+              | 'check'
+              | 'gauge'
+              | 'fileText'
+              | 'wallet'
+              | 'userCog'
+              | 'barChart'
+              | 'lock'
+              | 'bell'
+              | 'settings'
+              | 'cloud'
+              | 'database'
+            )
+          | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  screenshotsHeading?: string | null;
+  /**
+   * Images shown in the horizontally-scrollable screenshots carousel.
+   */
+  screenshots?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  testimonial?: {
+    quote?: string | null;
+    authorName?: string | null;
+    authorRole?: string | null;
+    authorImage?: (string | null) | Media;
+    rating?: number | null;
+  };
   meta?: {
     title?: string | null;
     /**
@@ -678,7 +858,7 @@ export interface Project {
    */
   featured?: boolean | null;
   /**
-   * Lower numbers show first in listings.
+   * Lower numbers show first in listings and drive the previous/next navigation order.
    */
   order?: number | null;
   publishedAt?: string | null;
@@ -690,6 +870,97 @@ export interface Project {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LandingHeroBlock".
+ */
+export interface LandingHeroBlock {
+  /**
+   * Optional small label, e.g. "🛡️ Trusted by 200+ companies".
+   */
+  badge?: string | null;
+  /**
+   * Use double asterisks to highlight a word in brand color, e.g. "Securing **your business** in a digital world".
+   */
+  heading: string;
+  /**
+   * One or two sentences. Keep it concise and benefit-focused.
+   */
+  subheading?: string | null;
+  /**
+   * Call-to-action buttons (max 2). First one is bold, second is outline.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown on the right side. Leave empty for a text-only hero. Ignored when a background video is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Upload an .mp4 or .webm to use as a full-width background. When set, the hero switches to a centered overlay layout and the hero image is ignored.
+   */
+  videoBackground?: (string | null) | Media;
+  /**
+   * Image shown before the background video loads (or if it fails to play). Only used when a background video is set.
+   */
+  videoPoster?: (string | null) | Media;
+  /**
+   * Small note below the CTAs, e.g. "No credit card required • 14-day free trial".
+   */
+  trustText?: string | null;
+  background?: ('gradient' | 'grid' | 'plain') | null;
+  /**
+   * Use if you need formatting beyond plain heading + subheading.
+   */
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'landingHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1628,27 +1899,93 @@ export interface FAQBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LandingHeroBlock".
+ * via the `definition` "LandingHeroV2Block".
  */
-export interface LandingHeroBlock {
+export interface LandingHeroV2Block {
   /**
-   * Optional small label, e.g. "🛡️ Trusted by 200+ companies".
+   * Small label rendered above the heading, e.g. "An IT services agency, engineered for momentum".
    */
-  badge?: string | null;
+  eyebrow?: string | null;
   /**
-   * Use double asterisks to highlight a word in brand color, e.g. "Securing **your business** in a digital world".
+   * Plain part of the headline. E.g. "Software,".
    */
-  heading: string;
+  headline: string;
   /**
-   * One or two sentences. Keep it concise and benefit-focused.
+   * Word shown in serif italic + brand color on the next line, e.g. "engineered.".
+   */
+  italicWord: string;
+  /**
+   * Short paragraph below the heading. Wrap words in *asterisks* to italicize them (e.g. "One crew of *engineers, designers and operators*").
    */
   subheading?: string | null;
+  primaryCta: {
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: string | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: string | Post;
+          } | null)
+        | ({
+            relationTo: 'services';
+            value: string | Service;
+          } | null)
+        | ({
+            relationTo: 'projects';
+            value: string | Project;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
+  secondaryCta: {
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: string | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: string | Post;
+          } | null)
+        | ({
+            relationTo: 'services';
+            value: string | Service;
+          } | null)
+        | ({
+            relationTo: 'projects';
+            value: string | Project;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
   /**
-   * Call-to-action buttons (max 2). First one is bold, second is outline.
+   * Up to 6 cards floating around the headline. Order here is the order they appear (top-left, top-right, mid-left, mid-right, bottom-left, bottom-right).
    */
-  links?:
+  cards?:
     | {
-        link: {
+        /**
+         * Small number shown at the top of the card, e.g. "01".
+         */
+        idx: string;
+        /**
+         * e.g. "Web Development".
+         */
+        title: string;
+        /**
+         * Comma-separated stack, e.g. "Next · React · Astro".
+         */
+        tag: string;
+        cardLink?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -1669,53 +2006,36 @@ export interface LandingHeroBlock {
                 value: string | Project;
               } | null);
           url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
     | null;
-  /**
-   * Shown on the right side. Leave empty for a text-only hero. Ignored when a background video is set.
-   */
-  image?: (string | null) | Media;
-  /**
-   * Upload an .mp4 or .webm to use as a full-width background. When set, the hero switches to a centered overlay layout and the hero image is ignored.
-   */
-  videoBackground?: (string | null) | Media;
-  /**
-   * Image shown before the background video loads (or if it fails to play). Only used when a background video is set.
-   */
-  videoPoster?: (string | null) | Media;
-  /**
-   * Small note below the CTAs, e.g. "No credit card required • 14-day free trial".
-   */
-  trustText?: string | null;
-  background?: ('gradient' | 'grid' | 'plain') | null;
-  /**
-   * Use if you need formatting beyond plain heading + subheading.
-   */
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  stats?:
+    | {
+        /**
+         * e.g. "150+", "24/7".
+         */
+        value: string;
+        /**
+         * e.g. "Global clients".
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  trustedByLabel?: string | null;
+  trustedByLogos?:
+    | {
+        /**
+         * Shown in monospace caps, e.g. "NORTHWIND".
+         */
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'landingHero';
+  blockType: 'landingHeroV2';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2029,6 +2349,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         landingHero?: T | LandingHeroBlockSelect<T>;
+        landingHeroV2?: T | LandingHeroV2BlockSelect<T>;
         logoMarquee?: T | LogoMarqueeBlockSelect<T>;
         stats?: T | StatsBlockSelect<T>;
         features?: T | FeaturesBlockSelect<T>;
@@ -2085,6 +2406,74 @@ export interface LandingHeroBlockSelect<T extends boolean = true> {
   trustText?: T;
   background?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LandingHeroV2Block_select".
+ */
+export interface LandingHeroV2BlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headline?: T;
+  italicWord?: T;
+  subheading?: T;
+  primaryCta?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+      };
+  secondaryCta?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+      };
+  cards?:
+    | T
+    | {
+        idx?: T;
+        title?: T;
+        tag?: T;
+        cardLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  trustedByLabel?: T;
+  trustedByLogos?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2506,7 +2895,10 @@ export interface ServicesSelect<T extends boolean = true> {
  */
 export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
+  titleAccent?: T;
   client?: T;
+  duration?: T;
+  teamSize?: T;
   year?: T;
   summary?: T;
   coverImage?: T;
@@ -2518,44 +2910,76 @@ export interface ProjectsSelect<T extends boolean = true> {
         id?: T;
       };
   liveUrl?: T;
+  sourceUrl?: T;
   caseStudyHighlight?: T;
-  hero?:
+  overview?: T;
+  highlightStats?:
     | T
     | {
-        type?: T;
-        richText?: T;
-        links?:
+        value?: T;
+        label?: T;
+        icon?: T;
+        id?: T;
+      };
+  challenge?:
+    | T
+    | {
+        icon?: T;
+        heading?: T;
+        description?: T;
+      };
+  solution?:
+    | T
+    | {
+        icon?: T;
+        heading?: T;
+        description?: T;
+      };
+  results?:
+    | T
+    | {
+        icon?: T;
+        heading?: T;
+        items?:
           | T
           | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
+              text?: T;
               id?: T;
             };
-        media?: T;
       };
-  layout?:
+  technologiesHeading?: T;
+  technologies?:
     | T
     | {
-        logoMarquee?: T | LogoMarqueeBlockSelect<T>;
-        stats?: T | StatsBlockSelect<T>;
-        features?: T | FeaturesBlockSelect<T>;
-        cta?: T | CallToActionBlockSelect<T>;
-        content?: T | ContentBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
-        archive?: T | ArchiveBlockSelect<T>;
-        formBlock?: T | FormBlockSelect<T>;
-        contactSection?: T | ContactSectionBlockSelect<T>;
-        aboutSection?: T | AboutSectionBlockSelect<T>;
-        testimonials?: T | TestimonialsBlockSelect<T>;
-        faq?: T | FAQBlockSelect<T>;
+        name?: T;
+        logo?: T;
+        id?: T;
+      };
+  keyFeaturesHeading?: T;
+  keyFeatures?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  screenshotsHeading?: T;
+  screenshots?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  testimonial?:
+    | T
+    | {
+        quote?: T;
+        authorName?: T;
+        authorRole?: T;
+        authorImage?: T;
+        rating?: T;
       };
   meta?:
     | T
@@ -2578,6 +3002,7 @@ export interface ProjectsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  cloudinaryPublicId?: T;
   alt?: T;
   caption?: T;
   folder?: T;
@@ -3211,6 +3636,108 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Controls the hero, stats, CTA card and testimonial on the /projects page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-page".
+ */
+export interface PortfolioPage {
+  id: string;
+  eyebrow?: string | null;
+  /**
+   * Wrap part of the heading in **double asterisks** to highlight it in brand colour. Example: "Our Work Speaks for **Itself**".
+   */
+  heading?: string | null;
+  subtitle?: string | null;
+  /**
+   * The illustration / dashboard mockup shown beside the heading.
+   */
+  image?: (string | null) | Media;
+  highlights?:
+    | {
+        icon?:
+          | (
+              | 'rocket'
+              | 'shield'
+              | 'users'
+              | 'star'
+              | 'briefcase'
+              | 'globe'
+              | 'code'
+              | 'sparkles'
+              | 'zap'
+              | 'trophy'
+              | 'heart'
+              | 'check'
+            )
+          | null;
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  statsHeading?: string | null;
+  stats?:
+    | {
+        /**
+         * e.g. "120+", "99.9%".
+         */
+        value: string;
+        label: string;
+        icon?:
+          | (
+              | 'rocket'
+              | 'shield'
+              | 'users'
+              | 'star'
+              | 'briefcase'
+              | 'globe'
+              | 'code'
+              | 'sparkles'
+              | 'zap'
+              | 'trophy'
+              | 'heart'
+              | 'check'
+            )
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  ctaLink: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: string | Service;
+        } | null)
+      | ({
+          relationTo: 'projects';
+          value: string | Project;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  quote?: string | null;
+  authorName?: string | null;
+  authorRole?: string | null;
+  authorImage?: (string | null) | Media;
+  rating?: number | null;
+  searchPlaceholder?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3327,6 +3854,53 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-page_select".
+ */
+export interface PortfolioPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  image?: T;
+  highlights?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  statsHeading?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        icon?: T;
+        id?: T;
+      };
+  ctaHeading?: T;
+  ctaText?: T;
+  ctaLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  quote?: T;
+  authorName?: T;
+  authorRole?: T;
+  authorImage?: T;
+  rating?: T;
+  searchPlaceholder?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

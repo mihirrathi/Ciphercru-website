@@ -11,6 +11,7 @@ import { FAQ } from '../../blocks/FAQ/config'
 import { Features } from '../../blocks/Features/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LandingHero } from '../../blocks/LandingHero/config'
+import { LandingHeroV2 } from '../../blocks/LandingHeroV2/config'
 import { LogoMarquee } from '../../blocks/LogoMarquee/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { Stats } from '../../blocks/Stats/config'
@@ -82,6 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 LandingHero,
+                LandingHeroV2,
                 LogoMarquee,
                 Stats,
                 Features,

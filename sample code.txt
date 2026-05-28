@@ -1,0 +1,329 @@
+// hero-v3.jsx — "Kinetic Constellation"
+// Center-stage headline with service cards orbiting it. Mouse parallax + drift.
+// Massive brand mark watermark behind. Playful, spatial, interactive.
+
+function HeroV3({ tweaks }) {
+  const accent = tweaks.accent;
+  const mounted = useMounted(120);
+  const stageRef = React.useRef(null);
+  const parallax = useMouseParallax(stageRef);
+  const [activeIdx, setActiveIdx] = React.useState(null);
+  const clock = useLiveClock();
+
+  const headlineWords = tweaks.headline.split(" ");
+
+  // Card positions (% from center of stage); each gets a depth (0..1) and float phase
+  const cards = [
+    { ...CC_SERVICES[0], x: -36, y: -22, rot: -3.5, depth: 0.4,  phase: 0.0 },
+    { ...CC_SERVICES[1], x:  34, y: -28, rot:  4,   depth: 0.7,  phase: 0.8 },
+    { ...CC_SERVICES[2], x: -42, y:  16, rot:  2,   depth: 0.6,  phase: 1.4 },
+    { ...CC_SERVICES[3], x:  38, y:  10, rot: -3,   depth: 0.4,  phase: 2.1 },
+    { ...CC_SERVICES[4], x: -28, y:  34, rot: -2.5, depth: 0.8,  phase: 2.8 },
+    { ...CC_SERVICES[5], x:  30, y:  38, rot:  3.5, depth: 0.5,  phase: 3.4 },
+  ];
+
+  return (
+    <div ref={stageRef} className="v3-root" data-screen-label="V3 — Kinetic Constellation">
+      <style>{V3_CSS}</style>
+
+      {/* Background watermark mark */}
+      <div className="v3-watermark" aria-hidden="true"
+           style={{
+             transform: `translate(calc(-50% + ${parallax.x * -16}px), calc(-50% + ${parallax.y * -10}px))`,
+             color: accent,
+           }}>
+        <CCMark size={1100} color={accent} />
+      </div>
+
+      {/* Soft radial accent */}
+      <div className="v3-halo" style={{ background: `radial-gradient(50% 50% at 50% 45%, ${accent}22, transparent 70%)` }} />
+
+      {/* Top nav */}
+      <header className="v3-nav">
+        <a className="v3-brand" href="#">
+          <CCMark size={26} color={accent} />
+          <span className="v3-brand-name">CipherCru</span>
+          <span className="v3-brand-pill">Innovations</span>
+        </a>
+        <nav className="v3-nav-links">
+          {CC_NAV.map((n) => (
+            <a key={n.idx} href="#" className="v3-nav-link">{n.label}</a>
+          ))}
+        </nav>
+        <div className="v3-nav-right">
+          <span className="v3-clock">
+            <span className="v3-pulse" style={{ background: accent }} />
+            <span>{clock}</span>
+          </span>
+          <a href="#" className="v3-cta" style={{ background: "var(--ink)", color: "var(--bg)" }}>
+            <span>{tweaks.primaryCta}</span>
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2 11 L11 2 M4 2 H11 V9" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      {/* Centerpiece stage */}
+      <div className="v3-stage">
+
+        {/* Floating cards */}
+        {cards.map((c, i) => {
+          const isActive = activeIdx === i;
+          const px = parallax.x * c.depth * 26;
+          const py = parallax.y * c.depth * 18;
+          return (
+            <div
+              key={c.idx}
+              className={`v3-card v3-card-${i} ${isActive ? "v3-card-on" : ""}`}
+              style={{
+                left: `calc(50% + ${c.x}%)`,
+                top: `calc(50% + ${c.y}%)`,
+                transform: `translate(-50%, -50%) translate3d(${px}px, ${py}px, 0) rotate(${c.rot}deg)`,
+                animationDelay: `${c.phase}s`,
+                opacity: mounted ? 1 : 0,
+                transitionDelay: `${240 + i * 90}ms`,
+              }}
+              onMouseEnter={() => setActiveIdx(i)}
+              onMouseLeave={() => setActiveIdx(null)}
+            >
+              <div className="v3-card-inner">
+                <div className="v3-card-top">
+                  <span className="v3-card-idx">{c.idx}</span>
+                  <span className="v3-card-dot" style={{ background: accent }} />
+                </div>
+                <div className="v3-card-title">{c.title}</div>
+                <div className="v3-card-tag">{c.tag}</div>
+                <div className="v3-card-cta">
+                  <span>Open</span>
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                    <path d="M2 9 L9 2 M3.5 2 H9 V7.5" stroke="currentColor" strokeWidth="1.3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Center content */}
+        <div className="v3-center">
+          <div className="v3-eyebrow" data-in={mounted}>
+            <span className="v3-eb-dot" style={{ background: accent }} />
+            <span>An IT services agency, engineered for momentum</span>
+          </div>
+
+          <h1 className="v3-h1">
+            {headlineWords.map((w, i) => {
+              const isLast = i === headlineWords.length - 1;
+              return (
+                <span key={i} className={`v3-h1-line line-clip ${mounted ? "in" : ""}`} style={{ transitionDelay: `${180 + i * 100}ms` }}>
+                  <span>
+                    {isLast ? <em className="v3-italic" style={{ color: accent }}>{w}</em> : w}
+                    {i < headlineWords.length - 1 ? "\u00A0" : ""}
+                  </span>
+                </span>
+              );
+            })}
+          </h1>
+
+          <p className={`v3-sub reveal ${mounted ? "in" : ""}`} style={{ transitionDelay: "560ms" }}>
+            150+ clients. 300+ projects. One crew of <em>engineers, designers and operators</em> turning
+            briefs into production systems.
+          </p>
+
+          <div className={`v3-actions reveal ${mounted ? "in" : ""}`} style={{ transitionDelay: "680ms" }}>
+            <a href="#" className="v3-cta-primary" style={{ background: accent, color: "#fff" }}>
+              <span>{tweaks.primaryCta}</span>
+              <span className="v3-cta-arrow">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="currentColor" strokeWidth="1.6" />
+                </svg>
+              </span>
+            </a>
+            <a href="#" className="v3-cta-ghost">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M5 4 L9 6.5 L5 9 Z" fill="currentColor" />
+              </svg>
+              <span>{tweaks.secondaryCta}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom stats marquee */}
+      <footer className="v3-foot">
+        <div className="v3-stats">
+          {CC_STATS.map((s, i) => (
+            <div key={i} className="v3-stat" style={{ transitionDelay: `${900 + i * 80}ms` }}>
+              <span className="v3-stat-v">{s.value}</span>
+              <span className="v3-stat-l">{s.label}</span>
+            </div>
+          ))}
+        </div>
+        <div className="v3-foot-r">
+          <span className="v3-foot-label">Trusted by</span>
+          <div className="v3-logos">
+            <span>NORTHWIND</span>
+            <span>OCTANE</span>
+            <span>FIELDLY</span>
+            <span>STRATA</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+const V3_CSS = `
+  .v3-root {
+    position: relative; min-height: 100vh; overflow: hidden;
+    background: var(--bg); color: var(--ink);
+    padding: 18px 36px 56px;
+    font-family: var(--font-body);
+    display: flex; flex-direction: column;
+  }
+  .v3-watermark {
+    position: absolute; top: 48%; left: 50%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.04;
+    transition: transform .25s cubic-bezier(.2,.7,.2,1);
+  }
+  [data-theme="dark"] .v3-watermark { opacity: 0.06; }
+  .v3-halo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+  .v3-nav {
+    position: relative; z-index: 3;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 28px; padding: 14px 0;
+  }
+  .v3-brand { display: inline-flex; align-items: center; gap: 10px; }
+  .v3-brand-name { font-weight: 600; letter-spacing: -0.01em; font-size: 17px; }
+  .v3-brand-pill { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted); padding: 3px 7px; border: 1px solid var(--line); border-radius: 999px; }
+  .v3-nav-links { display: flex; gap: 28px; justify-content: center; }
+  .v3-nav-link { font-size: 14px; color: var(--ink-soft); transition: color .2s; position: relative; padding: 6px 0; }
+  .v3-nav-link::after { content: ""; position: absolute; left: 50%; right: 50%; bottom: 0; height: 1px; background: currentColor; transition: left .25s, right .25s; }
+  .v3-nav-link:hover { color: var(--ink); }
+  .v3-nav-link:hover::after { left: 0; right: 0; }
+  .v3-nav-right { display: flex; align-items: center; gap: 14px; justify-self: end; }
+  .v3-clock { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+  .v3-pulse { width: 7px; height: 7px; border-radius: 50%; animation: pulse-dot 1.8s ease-in-out infinite; }
+  .v3-cta { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px 9px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; }
+  .v3-cta:hover { transform: translateY(-1px); transition: transform .2s; }
+
+  .v3-stage {
+    position: relative; z-index: 2;
+    flex: 1; min-height: 600px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 0 0;
+  }
+
+  .v3-center {
+    position: relative; z-index: 3;
+    max-width: 760px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  .v3-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--ink-muted);
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .8s, transform .8s;
+  }
+  .v3-eyebrow[data-in="true"] { opacity: 1; transform: none; }
+  .v3-eb-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .v3-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(58px, 9vw, 144px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+    margin: 6px 0 4px;
+    text-wrap: balance;
+    width: 100%;
+    align-self: stretch;
+  }
+  .v3-h1-line { display: block; }
+  .v3-h1-line > span { padding: 0 0.06em; }
+  .v3-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+
+  .v3-sub {
+    max-width: 540px; margin: 6px 0 0;
+    font-size: 17px; line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .v3-sub em { font-family: var(--font-serif); font-style: italic; color: var(--ink); font-size: 1.04em; }
+
+  .v3-actions { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+  .v3-cta-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 14px 14px 22px; border-radius: 999px;
+    font-size: 15px; font-weight: 500;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 12px 28px -8px rgba(0,0,0,0.25);
+  }
+  .v3-cta-primary:hover { transform: translateY(-1px); }
+  .v3-cta-arrow { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.18); align-items: center; justify-content: center; }
+  .v3-cta-ghost { display: inline-flex; align-items: center; gap: 9px; padding: 14px 4px; font-size: 14px; color: var(--ink-soft); transition: color .2s; }
+  .v3-cta-ghost:hover { color: var(--ink); }
+
+  /* Floating service cards */
+  .v3-card {
+    position: absolute; width: 200px;
+    opacity: 0;
+    transition: opacity .8s cubic-bezier(.2,.7,.1,1), transform .35s cubic-bezier(.2,.7,.1,1);
+    will-change: transform;
+    z-index: 2;
+  }
+  .v3-card-inner {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 24px 48px -16px rgba(0,0,0,0.18), 0 2px 0 rgba(255,255,255,0.04) inset;
+    backdrop-filter: blur(8px);
+    transition: transform .25s cubic-bezier(.2,.7,.1,1), border-color .25s, box-shadow .25s;
+    animation: float-y 6s ease-in-out infinite;
+  }
+  [data-theme="dark"] .v3-card-inner { box-shadow: 0 24px 48px -16px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.04) inset; }
+  .v3-card:hover { z-index: 9; }
+  .v3-card:hover .v3-card-inner {
+    transform: translateY(-6px) scale(1.04);
+    border-color: var(--ink);
+    box-shadow: 0 32px 60px -16px rgba(0,0,0,0.3);
+  }
+  .v3-card-top { display: flex; justify-content: space-between; align-items: center; }
+  .v3-card-idx { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); letter-spacing: 0.05em; }
+  .v3-card-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .v3-card-title { font-size: 17px; font-weight: 500; letter-spacing: -0.02em; margin-top: 18px; }
+  .v3-card-tag { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-top: 4px; }
+  .v3-card-cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); width: 100%; }
+
+  .v3-foot {
+    position: relative; z-index: 2;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 32px; padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .v3-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+  .v3-stat { display: inline-flex; align-items: baseline; gap: 8px; }
+  .v3-stat-v { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+  .v3-stat-l { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+  .v3-foot-r { text-align: right; }
+  .v3-foot-label { display: block; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); margin-bottom: 6px; }
+  .v3-logos { display: flex; gap: 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .v3-logos span { opacity: 0.75; }
+
+  @media (max-width: 1100px) {
+    .v3-nav-links { display: none; }
+    .v3-nav { grid-template-columns: 1fr auto; }
+    .v3-card { display: none; }
+  }
+`;
+
+window.HeroV3 = HeroV3;

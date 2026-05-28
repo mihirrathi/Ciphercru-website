@@ -35,6 +35,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const darkText = isScrolled || theme !== 'dark'
+
   return (
     <header
       className={cn(
@@ -65,7 +67,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
 
         {/* Nav Links - Center */}
-        <HeaderNav data={data} isScrolled={isScrolled} />
+        <HeaderNav data={data} darkText={darkText} />
 
         {/* Right Side - Login + CTA Button */}
         <div className="flex items-center gap-4">
@@ -73,7 +75,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             href="/login"
             className={cn(
               'text-sm font-medium transition-colors',
-              isScrolled
+              darkText
                 ? 'text-gray-600 hover:text-brand'
                 : 'text-white/90 hover:text-white drop-shadow-sm',
             )}

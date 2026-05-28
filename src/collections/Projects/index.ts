@@ -2,19 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { AboutSection } from '../../blocks/AboutSection/config'
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { ContactSection } from '../../blocks/ContactSection/config'
-import { Content } from '../../blocks/Content/config'
-import { FAQ } from '../../blocks/FAQ/config'
-import { Features } from '../../blocks/Features/config'
-import { FormBlock } from '../../blocks/Form/config'
-import { LogoMarquee } from '../../blocks/LogoMarquee/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { Stats } from '../../blocks/Stats/config'
-import { Testimonials } from '../../blocks/Testimonials/config'
-import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -27,6 +14,36 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+
+// Shared icon options. Values map to lucide-react icons on the frontend
+// in `app/(frontend)/projects/_icons.tsx`.
+const iconOptions = [
+  { label: 'Target', value: 'target' },
+  { label: 'Lightbulb', value: 'lightbulb' },
+  { label: 'Trending Up', value: 'trendingUp' },
+  { label: 'Rocket', value: 'rocket' },
+  { label: 'Shield', value: 'shield' },
+  { label: 'Users', value: 'users' },
+  { label: 'Star', value: 'star' },
+  { label: 'Briefcase', value: 'briefcase' },
+  { label: 'Globe', value: 'globe' },
+  { label: 'Code', value: 'code' },
+  { label: 'Sparkles', value: 'sparkles' },
+  { label: 'Lightning', value: 'zap' },
+  { label: 'Trophy', value: 'trophy' },
+  { label: 'Heart', value: 'heart' },
+  { label: 'Check', value: 'check' },
+  { label: 'Gauge', value: 'gauge' },
+  { label: 'File Text', value: 'fileText' },
+  { label: 'Wallet', value: 'wallet' },
+  { label: 'User Cog', value: 'userCog' },
+  { label: 'Bar Chart', value: 'barChart' },
+  { label: 'Lock', value: 'lock' },
+  { label: 'Bell', value: 'bell' },
+  { label: 'Settings', value: 'settings' },
+  { label: 'Cloud', value: 'cloud' },
+  { label: 'Database', value: 'database' },
+]
 
 export const Projects: CollectionConfig<'projects'> = {
   slug: 'projects',
@@ -42,6 +59,7 @@ export const Projects: CollectionConfig<'projects'> = {
   },
   defaultPopulate: {
     title: true,
+    titleAccent: true,
     slug: true,
     client: true,
     summary: true,
@@ -71,10 +89,28 @@ export const Projects: CollectionConfig<'projects'> = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      label: 'Project title',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Project title',
+          required: true,
+          admin: {
+            width: '50%',
+            description: 'Primary title shown in black, e.g. "FinDash – Smart".',
+          },
+        },
+        {
+          name: 'titleAccent',
+          type: 'text',
+          label: 'Title accent (optional)',
+          admin: {
+            width: '50%',
+            description: 'Optional secondary title rendered in brand blue on a new line, e.g. "Financial Dashboard".',
+          },
+        },
+      ],
     },
     {
       type: 'row',
@@ -83,13 +119,31 @@ export const Projects: CollectionConfig<'projects'> = {
           name: 'client',
           type: 'text',
           label: 'Client',
-          admin: { width: '50%' },
+          admin: { width: '25%' },
+        },
+        {
+          name: 'duration',
+          type: 'text',
+          label: 'Duration',
+          admin: {
+            width: '25%',
+            description: 'e.g. "8 Weeks".',
+          },
+        },
+        {
+          name: 'teamSize',
+          type: 'text',
+          label: 'Team size',
+          admin: {
+            width: '25%',
+            description: 'e.g. "4 Members".',
+          },
         },
         {
           name: 'year',
           type: 'number',
           label: 'Year',
-          admin: { width: '50%' },
+          admin: { width: '25%' },
         },
       ],
     },
@@ -98,17 +152,17 @@ export const Projects: CollectionConfig<'projects'> = {
       type: 'textarea',
       label: 'Summary',
       admin: {
-        description: 'Short description shown on the portfolio card (1–2 sentences).',
+        description: 'Short description shown on the portfolio card and at the top of the case study (1–2 sentences).',
       },
     },
     {
       name: 'coverImage',
       type: 'upload',
       relationTo: 'media',
-      label: 'Cover image',
+      label: 'Cover / mockup image',
       required: true,
       admin: {
-        description: 'Used on the portfolio grid card and as the page header image.',
+        description: 'Used on the portfolio grid card and as the large device-mockup image in the case study header.',
       },
     },
     {
@@ -133,7 +187,7 @@ export const Projects: CollectionConfig<'projects'> = {
       label: 'Tech stack / tags',
       labels: { singular: 'Tag', plural: 'Tags' },
       admin: {
-        description: 'Technologies used, e.g. "React", "Node.js", "AWS".',
+        description: 'Technologies used, e.g. "React", "Node.js", "AWS". Shown as pill badges on the portfolio card.',
         initCollapsed: true,
       },
       fields: [
@@ -150,48 +204,354 @@ export const Projects: CollectionConfig<'projects'> = {
         {
           name: 'liveUrl',
           type: 'text',
-          label: 'Live URL (optional)',
+          label: 'Live website URL',
           admin: { width: '50%' },
         },
         {
-          name: 'caseStudyHighlight',
+          name: 'sourceUrl',
           type: 'text',
-          label: 'Headline result (optional)',
+          label: 'Source code URL',
           admin: {
             width: '50%',
-            description: 'A one-line highlight, e.g. "+45% conversion".',
+            description: 'Optional. Renders the "View Source Code" button next to "Live Website".',
           },
         },
       ],
     },
     {
+      name: 'caseStudyHighlight',
+      type: 'text',
+      label: 'Cover badge (optional)',
+      admin: {
+        description: 'A one-line highlight overlaid on the cover image, e.g. "+45% conversion".',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
-        { fields: [hero], label: 'Hero' },
         {
+          label: 'Overview',
           fields: [
             {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [
-                LogoMarquee,
-                Stats,
-                Features,
-                CallToAction,
-                Content,
-                MediaBlock,
-                Archive,
-                FormBlock,
-                ContactSection,
-                AboutSection,
-                Testimonials,
-                FAQ,
+              name: 'overview',
+              type: 'textarea',
+              label: 'Project overview',
+              admin: {
+                description: 'Longer description shown on the left of the "Project Overview" section.',
+              },
+            },
+            {
+              name: 'highlightStats',
+              type: 'array',
+              label: 'Highlight stats (blue gradient panel)',
+              labels: { singular: 'Stat', plural: 'Stats' },
+              maxRows: 4,
+              admin: {
+                description: 'Up to 4 headline numbers shown in the blue gradient card under the overview text.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'value',
+                      type: 'text',
+                      label: 'Value',
+                      required: true,
+                      admin: {
+                        width: '50%',
+                        description: 'e.g. "40%", "2.5x".',
+                      },
+                    },
+                    {
+                      name: 'label',
+                      type: 'text',
+                      label: 'Label',
+                      required: true,
+                      admin: {
+                        width: '50%',
+                        description: 'e.g. "More Efficiency".',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'icon',
+                  type: 'select',
+                  label: 'Icon',
+                  defaultValue: 'gauge',
+                  options: iconOptions,
+                },
               ],
-              required: true,
-              admin: { initCollapsed: true },
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'challenge',
+                  type: 'group',
+                  label: 'The Challenge',
+                  admin: { width: '33%' },
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      label: 'Icon',
+                      defaultValue: 'target',
+                      options: iconOptions,
+                    },
+                    {
+                      name: 'heading',
+                      type: 'text',
+                      label: 'Heading',
+                      defaultValue: 'The Challenge',
+                    },
+                    {
+                      name: 'description',
+                      type: 'textarea',
+                      label: 'Description',
+                    },
+                  ],
+                },
+                {
+                  name: 'solution',
+                  type: 'group',
+                  label: 'Our Solution',
+                  admin: { width: '33%' },
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      label: 'Icon',
+                      defaultValue: 'lightbulb',
+                      options: iconOptions,
+                    },
+                    {
+                      name: 'heading',
+                      type: 'text',
+                      label: 'Heading',
+                      defaultValue: 'Our Solution',
+                    },
+                    {
+                      name: 'description',
+                      type: 'textarea',
+                      label: 'Description',
+                    },
+                  ],
+                },
+                {
+                  name: 'results',
+                  type: 'group',
+                  label: 'The Results',
+                  admin: { width: '34%' },
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      label: 'Icon',
+                      defaultValue: 'trendingUp',
+                      options: iconOptions,
+                    },
+                    {
+                      name: 'heading',
+                      type: 'text',
+                      label: 'Heading',
+                      defaultValue: 'The Results',
+                    },
+                    {
+                      name: 'items',
+                      type: 'array',
+                      label: 'Result bullets',
+                      labels: { singular: 'Result', plural: 'Results' },
+                      admin: { initCollapsed: true },
+                      fields: [
+                        {
+                          name: 'text',
+                          type: 'text',
+                          required: true,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
             },
           ],
-          label: 'Case study content',
+        },
+        {
+          label: 'Tech & Features',
+          fields: [
+            {
+              name: 'technologiesHeading',
+              type: 'text',
+              label: '"Technologies Used" heading',
+              defaultValue: 'Technologies Used',
+            },
+            {
+              name: 'technologies',
+              type: 'array',
+              label: 'Technologies used',
+              labels: { singular: 'Technology', plural: 'Technologies' },
+              admin: {
+                description: 'Tools/libraries shown with a logo and name in the left card.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'name',
+                      type: 'text',
+                      label: 'Name',
+                      required: true,
+                      admin: { width: '50%' },
+                    },
+                    {
+                      name: 'logo',
+                      type: 'upload',
+                      relationTo: 'media',
+                      label: 'Logo',
+                      admin: { width: '50%' },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'keyFeaturesHeading',
+              type: 'text',
+              label: '"Key Features" heading',
+              defaultValue: 'Key Features',
+            },
+            {
+              name: 'keyFeatures',
+              type: 'array',
+              label: 'Key features',
+              labels: { singular: 'Feature', plural: 'Features' },
+              admin: {
+                description: 'Up to ~6 product features, each rendered as an icon card.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      label: 'Icon',
+                      defaultValue: 'sparkles',
+                      options: iconOptions,
+                      admin: { width: '50%' },
+                    },
+                    {
+                      name: 'title',
+                      type: 'text',
+                      label: 'Title',
+                      required: true,
+                      admin: { width: '50%' },
+                    },
+                  ],
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                  label: 'Description',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Screenshots',
+          fields: [
+            {
+              name: 'screenshotsHeading',
+              type: 'text',
+              label: '"Project Screenshots" heading',
+              defaultValue: 'Project Screenshots',
+            },
+            {
+              name: 'screenshots',
+              type: 'array',
+              label: 'Project screenshots',
+              labels: { singular: 'Screenshot', plural: 'Screenshots' },
+              admin: {
+                description: 'Images shown in the horizontally-scrollable screenshots carousel.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'caption',
+                  type: 'text',
+                  label: 'Caption (optional)',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Testimonial',
+          fields: [
+            {
+              name: 'testimonial',
+              type: 'group',
+              label: 'Client testimonial',
+              fields: [
+                {
+                  name: 'quote',
+                  type: 'textarea',
+                  label: 'Quote',
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'authorName',
+                      type: 'text',
+                      label: 'Author name',
+                      admin: { width: '50%' },
+                    },
+                    {
+                      name: 'authorRole',
+                      type: 'text',
+                      label: 'Author role / company',
+                      admin: { width: '50%' },
+                    },
+                  ],
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'authorImage',
+                      type: 'upload',
+                      relationTo: 'media',
+                      label: 'Author photo',
+                      admin: { width: '50%' },
+                    },
+                    {
+                      name: 'rating',
+                      type: 'number',
+                      label: 'Rating (1–5)',
+                      defaultValue: 5,
+                      min: 1,
+                      max: 5,
+                      admin: { width: '50%' },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
         {
           name: 'meta',
@@ -231,7 +591,7 @@ export const Projects: CollectionConfig<'projects'> = {
       defaultValue: 0,
       admin: {
         position: 'sidebar',
-        description: 'Lower numbers show first in listings.',
+        description: 'Lower numbers show first in listings and drive the previous/next navigation order.',
       },
     },
     {

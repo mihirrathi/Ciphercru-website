@@ -11,10 +11,14 @@ import { FAQBlock } from '@/blocks/FAQ/Component'
 import { FeaturesBlock } from '@/blocks/Features/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LandingHeroBlock } from '@/blocks/LandingHero/Component'
+import { LandingHeroV2Block } from '@/blocks/LandingHeroV2/Component'
 import { LogoMarqueeBlock } from '@/blocks/LogoMarquee/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StatsBlock } from '@/blocks/Stats/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
+
+// Block types temporarily hidden site-wide. Remove an entry here to show it again.
+const HIDDEN_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> = ['landingHero']
 
 const blockComponents = {
   aboutSection: AboutSectionBlock,
@@ -26,6 +30,7 @@ const blockComponents = {
   features: FeaturesBlock,
   formBlock: FormBlock,
   landingHero: LandingHeroBlock,
+  landingHeroV2: LandingHeroV2Block,
   logoMarquee: LogoMarqueeBlock,
   mediaBlock: MediaBlock,
   stats: StatsBlock,
@@ -44,6 +49,10 @@ export const RenderBlocks: React.FC<{
       <Fragment>
         {blocks.map((block, index) => {
           const { blockType } = block
+
+          if (HIDDEN_BLOCK_TYPES.includes(blockType)) {
+            return null
+          }
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]
