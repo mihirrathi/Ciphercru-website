@@ -21,9 +21,22 @@ import { ServiceHeroBlock } from '@/blocks/ServiceHero/Component'
 import { StatsBlock } from '@/blocks/Stats/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { WhyChooseUsBlock } from '@/blocks/WhyChooseUs/Component'
+import { Reveal } from '@/components/Reveal'
 
 // Block types temporarily hidden site-wide. Remove an entry here to show it again.
 const HIDDEN_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> = ['landingHero']
+
+// Blocks that animate themselves (heroes / marquee already have entrance
+// motion; the grids stagger their own cards) so we skip the generic wrapper.
+const SELF_ANIMATED_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> = [
+  'landingHero',
+  'landingHeroV2',
+  'serviceHero',
+  'logoMarquee',
+  'serviceCardsGrid',
+  'features',
+  'aboutSection',
+]
 
 const blockComponents = {
   aboutSection: AboutSectionBlock,
@@ -68,10 +81,18 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const rendered = (
+                // @ts-expect-error there may be some mismatch between the expected types here
+                <Block {...block} disableInnerContainer />
+              )
+
               return (
                 <div className="mt-8 lg:mt-16 first:mt-0" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
+                  {SELF_ANIMATED_BLOCK_TYPES.includes(blockType) ? (
+                    rendered
+                  ) : (
+                    <Reveal amount={0.15}>{rendered}</Reveal>
+                  )}
                 </div>
               )
             }

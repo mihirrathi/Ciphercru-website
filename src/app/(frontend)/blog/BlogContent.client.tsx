@@ -151,8 +151,8 @@ export const BlogContent: React.FC<Props> = ({
   return (
     <>
       {/* Hero */}
-      <section className="container pt-8">
-        <div className="relative rounded-3xl overflow-hidden bg-brand text-white">
+      <section className="px-4 sm:px-6 pt-8">
+        <div className="relative overflow-hidden rounded-3xl bg-brand text-white">
           {blog?.heroImage && typeof blog.heroImage === 'object' && (
             <div className="absolute inset-0 opacity-20 mix-blend-overlay">
               <Media
@@ -205,7 +205,6 @@ export const BlogContent: React.FC<Props> = ({
           </div>
         </div>
       </section>
-
       {/* Body grid */}
       <section className="container py-12 lg:py-16">
         <div className="grid lg:grid-cols-[1fr_320px] gap-10 lg:gap-12 items-start">

@@ -7,6 +7,7 @@ import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 import { AnimatedNumber } from '@/components/AnimatedNumber'
+import { Reveal } from '@/components/Reveal'
 import {
   Users,
   UserCheck,
@@ -125,33 +126,39 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             {/* Text column */}
             <div className={cn('relative', imageOnLeft && 'md:order-2')}>
               {eyebrow && (
-                <div className="inline-flex items-center gap-2 text-xs sm:text-[0.8rem] uppercase tracking-[0.18em] text-brand font-semibold mb-5">
-                  <span className="h-px w-6 bg-brand/70" />
-                  {eyebrow}
-                </div>
+                <Reveal delay={0}>
+                  <div className="inline-flex items-center gap-2 text-xs sm:text-[0.8rem] uppercase tracking-[0.18em] text-brand font-semibold mb-5">
+                    <span className="h-px w-6 bg-brand/70" />
+                    {eyebrow}
+                  </div>
+                </Reveal>
               )}
               {heading && (
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 leading-[1.15] mb-5">
-                  {renderHeading(heading)}
-                </h2>
+                <Reveal delay={0.08}>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 leading-[1.15] mb-5">
+                    {renderHeading(heading)}
+                  </h2>
+                </Reveal>
               )}
               {content && (
-                <RichText
-                  className={cn(
-                    'text-gray-600 leading-relaxed max-w-xl',
-                    '[&_p]:mb-4 [&_p:last-child]:mb-0 [&_p]:text-left!',
-                    '[&_strong]:text-gray-900 [&_strong]:font-semibold',
-                  )}
-                  data={content}
-                  enableGutter={false}
-                  enableProse={false}
-                />
+                <Reveal delay={0.16}>
+                  <RichText
+                    className={cn(
+                      'text-gray-600 leading-relaxed max-w-xl',
+                      '[&_p]:mb-4 [&_p:last-child]:mb-0 [&_p]:text-left!',
+                      '[&_strong]:text-gray-900 [&_strong]:font-semibold',
+                    )}
+                    data={content}
+                    enableGutter={false}
+                    enableProse={false}
+                  />
+                </Reveal>
               )}
 
               {hasFeatures && (
                 <ul className="mt-8 space-y-6 max-w-xl">
                   {features!.map((feature, i) => (
-                    <li key={i} className="flex gap-4">
+                    <Reveal as="li" key={i} delay={0.24 + i * 0.1} className="flex gap-4">
                       <div className="shrink-0 w-12 h-12 rounded-xl bg-brand text-white flex items-center justify-center shadow-md shadow-blue-300/40">
                         <Icon name={feature.icon} className="w-6 h-6" />
                       </div>
@@ -165,13 +172,13 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                           </p>
                         )}
                       </div>
-                    </li>
+                    </Reveal>
                   ))}
                 </ul>
               )}
 
               {Array.isArray(links) && links.length > 0 && (
-                <div className="flex flex-wrap gap-4 mt-10">
+                <Reveal delay={0.32} className="flex flex-wrap gap-4 mt-10">
                   {links.map(({ link }, i) => (
                     <CMSLink
                       key={i}
@@ -184,14 +191,14 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                       )}
                     />
                   ))}
-                </div>
+                </Reveal>
               )}
             </div>
 
             {/* Image column */}
             <div className={cn('relative', imageOnLeft && 'md:order-1')}>
               {image && (
-                <div className="relative">
+                <Reveal direction={imageOnLeft ? 'right' : 'left'} amount={0.3} className="relative">
                   <div
                     aria-hidden
                     className="absolute -inset-6 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(64,126,201,0.18),transparent_65%)] blur-2xl"
@@ -205,7 +212,8 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                   </div>
 
                   {hasFloatingCard && (
-                    <div
+                    <Reveal
+                      delay={0.3}
                       className={cn(
                         'absolute -bottom-8 left-4 right-4 sm:left-8 sm:right-8 lg:-bottom-10',
                         'rounded-2xl bg-brand text-white px-5 py-5 sm:px-6 sm:py-6',
@@ -219,9 +227,9 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                       <p className="text-sm sm:text-base lg:text-lg font-medium leading-snug">
                         {floatingCard?.text}
                       </p>
-                    </div>
+                    </Reveal>
                   )}
-                </div>
+                </Reveal>
               )}
             </div>
           </div>
@@ -240,8 +248,10 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 divide-y lg:divide-y-0 lg:divide-x divide-gray-200">
               {stats!.map((stat, i) => (
-                <div
+                <Reveal
                   key={i}
+                  delay={i * 0.12}
+                  amount={0.4}
                   className={cn(
                     'flex items-center gap-4 lg:gap-5',
                     i > 1 && 'pt-10 lg:pt-0',
@@ -265,7 +275,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                       </div>
                     )}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>

@@ -7,6 +7,7 @@ import type { ServiceHeroBlock as ServiceHeroBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { Reveal } from '@/components/Reveal'
 import { Icon } from '../_shared/Icon'
 import type { IconKey } from '../_shared/iconOptions'
 
@@ -33,10 +34,11 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
 
       <div className="container relative pt-10 pb-20 lg:pt-14 lg:pb-28">
         {Array.isArray(breadcrumbs) && breadcrumbs.length > 0 && (
-          <nav
-            aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-1.5 text-sm text-white/80 mb-10"
-          >
+          <Reveal>
+            <nav
+              aria-label="Breadcrumb"
+              className="flex flex-wrap items-center gap-1.5 text-sm text-white/80 mb-10"
+            >
             {breadcrumbs.map((c, i) => {
               const isLast = i === breadcrumbs.length - 1
               return (
@@ -55,26 +57,28 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
                 </React.Fragment>
               )
             })}
-          </nav>
+            </nav>
+          </Reveal>
         )}
 
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* LEFT */}
           <div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
+            <Reveal as="h1" delay={0.05} className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
               {title}
-            </h1>
+            </Reveal>
             {description && (
-              <p className="mt-6 max-w-xl text-base lg:text-lg text-white/85 leading-relaxed">
+              <Reveal as="p" delay={0.15} className="mt-6 max-w-xl text-base lg:text-lg text-white/85 leading-relaxed">
                 {description}
-              </p>
+              </Reveal>
             )}
 
             {Array.isArray(highlights) && highlights.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-4">
                 {highlights.map((h, i) => (
-                  <div
+                  <Reveal
                     key={i}
+                    delay={0.25 + i * 0.1}
                     className="flex items-start gap-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-3 min-w-[200px]"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15 border border-white/20">
@@ -93,13 +97,13 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
                         </div>
                       )}
                     </div>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             )}
 
             {Array.isArray(links) && links.length > 0 && (
-              <div className="mt-10 flex flex-wrap gap-4">
+              <Reveal delay={0.45} className="mt-10 flex flex-wrap gap-4">
                 {links.map(({ link }, i) => (
                   <CMSLink
                     key={i}
@@ -113,13 +117,13 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
                     )}
                   />
                 ))}
-              </div>
+              </Reveal>
             )}
           </div>
 
           {/* RIGHT — image + tech tiles */}
           {image && (
-            <div className="relative">
+            <Reveal direction="left" delay={0.2} className="relative">
               <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/20 shadow-2xl shadow-blue-900/40">
                 <Media
                   resource={image}
@@ -144,7 +148,7 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
                   ))}
                 </div>
               )}
-            </div>
+            </Reveal>
           )}
         </div>
       </div>

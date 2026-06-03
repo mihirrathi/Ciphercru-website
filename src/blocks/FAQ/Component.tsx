@@ -227,7 +227,7 @@ export const FAQBlock: React.FC<FAQBlockProps & { id?: string }> = ({
   )
 
   return (
-    <section className="relative bg-blue-50/40 py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-blue-50/40 py-16 lg:py-24">
       <div
         aria-hidden
         className="absolute -top-32 -right-32 -z-10 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(64,126,201,0.10),transparent_70%)]"

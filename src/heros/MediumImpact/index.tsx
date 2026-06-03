@@ -5,15 +5,20 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import { Reveal } from '@/components/Reveal'
 
 export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   return (
     <div className="">
       <div className="container mb-8">
-        {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
+        {richText && (
+          <Reveal>
+            <RichText className="mb-6" data={richText} enableGutter={false} />
+          </Reveal>
+        )}
 
         {Array.isArray(links) && links.length > 0 && (
-          <ul className="flex gap-4">
+          <Reveal as="ul" delay={0.12} className="flex gap-4">
             {links.map(({ link }, i) => {
               return (
                 <li key={i}>
@@ -21,12 +26,12 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
                 </li>
               )
             })}
-          </ul>
+          </Reveal>
         )}
       </div>
       <div className="container ">
         {media && typeof media === 'object' && (
-          <div>
+          <Reveal delay={0.18}>
             <Media
               className="-mx-4 md:-mx-8 2xl:-mx-16"
               imgClassName=""
@@ -38,7 +43,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
                 <RichText data={media.caption} enableGutter={false} />
               </div>
             )}
-          </div>
+          </Reveal>
         )}
       </div>
     </div>

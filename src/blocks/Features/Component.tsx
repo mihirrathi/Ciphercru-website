@@ -5,6 +5,7 @@ import type { FeaturesBlock as FeaturesBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
+import { Reveal } from '@/components/Reveal'
 import { Sparkles } from 'lucide-react'
 
 const colGrid: Record<string, string> = {
@@ -28,7 +29,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
   return (
     <section className="container py-16 lg:py-24">
       {(eyebrow || heading || intro) && (
-        <div
+        <Reveal
           className={cn(
             'mb-12 lg:mb-16',
             isCentered ? 'text-center max-w-2xl mx-auto' : 'max-w-3xl',
@@ -51,7 +52,7 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
               enableGutter={false}
             />
           )}
-        </div>
+        </Reveal>
       )}
 
       {Array.isArray(items) && items.length > 0 && (
@@ -91,19 +92,20 @@ export const FeaturesBlock: React.FC<FeaturesBlockProps> = ({
 
             if (cardStyle === 'soft') {
               return (
-                <div
+                <Reveal
                   key={i}
+                  delay={(i % 4) * 0.1}
                   className="group p-6 lg:p-8 rounded-2xl bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-100/40 hover:-translate-y-1 transition-all duration-300"
                 >
                   {inner}
-                </div>
+                </Reveal>
               )
             }
 
             return (
-              <div key={i} className="p-2">
+              <Reveal key={i} delay={(i % 4) * 0.1} className="p-2">
                 {inner}
-              </div>
+              </Reveal>
             )
           })}
         </div>

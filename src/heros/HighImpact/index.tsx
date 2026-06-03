@@ -7,6 +7,7 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import { Reveal } from '@/components/Reveal'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
@@ -22,9 +23,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
     >
       <div className="container mb-8 z-10 relative flex items-center justify-center">
         <div className="max-w-[36.5rem] md:text-center">
-          {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
+          {richText && (
+            <Reveal delay={0.05}>
+              <RichText className="mb-6" data={richText} enableGutter={false} />
+            </Reveal>
+          )}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex md:justify-center gap-4">
+            <Reveal as="ul" delay={0.2} className="flex md:justify-center gap-4">
               {links.map(({ link }, i) => {
                 return (
                   <li key={i}>
@@ -32,7 +37,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
                   </li>
                 )
               })}
-            </ul>
+            </Reveal>
           )}
         </div>
       </div>
