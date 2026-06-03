@@ -152,7 +152,7 @@ export const BlogContent: React.FC<Props> = ({
     <>
       {/* Hero */}
       <section className="container pt-8">
-        <div className="relative rounded-3xl overflow-hidden bg-linear-to-br from-brand to-indigo-600 text-white">
+        <div className="relative rounded-3xl overflow-hidden bg-brand text-white">
           {blog?.heroImage && typeof blog.heroImage === 'object' && (
             <div className="absolute inset-0 opacity-20 mix-blend-overlay">
               <Media

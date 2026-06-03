@@ -163,7 +163,7 @@ const Sidebar: React.FC<{
 
       {/* Newsletter */}
       {blog?.newsletterEnabled !== false && (
-        <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand to-indigo-600 p-6 text-white">
+        <div className="relative overflow-hidden rounded-2xl bg-brand p-6 text-white">
           <div
             aria-hidden
             className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10"
