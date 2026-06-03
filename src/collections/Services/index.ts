@@ -7,14 +7,19 @@ import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { ContactSection } from '../../blocks/ContactSection/config'
 import { Content } from '../../blocks/Content/config'
+import { CtaBanner } from '../../blocks/CtaBanner/config'
 import { FAQ } from '../../blocks/FAQ/config'
 import { Features } from '../../blocks/Features/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LandingHero } from '../../blocks/LandingHero/config'
 import { LogoMarquee } from '../../blocks/LogoMarquee/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { ProcessTimeline } from '../../blocks/ProcessTimeline/config'
+import { ServiceCardsGrid } from '../../blocks/ServiceCardsGrid/config'
+import { ServiceHero } from '../../blocks/ServiceHero/config'
 import { Stats } from '../../blocks/Stats/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
+import { WhyChooseUs } from '../../blocks/WhyChooseUs/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -98,6 +103,11 @@ export const Services: CollectionConfig<'services'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                ServiceHero,
+                ServiceCardsGrid,
+                WhyChooseUs,
+                ProcessTimeline,
+                CtaBanner,
                 LandingHero,
                 LogoMarquee,
                 Stats,

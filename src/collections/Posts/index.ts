@@ -15,6 +15,7 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { normalizeHashtag } from '../../utilities/hashtags'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
@@ -42,6 +43,11 @@ export const Posts: CollectionConfig<'posts'> = {
     title: true,
     slug: true,
     categories: true,
+    hashtags: true,
+    excerpt: true,
+    heroImage: true,
+    publishedAt: true,
+    featured: true,
     meta: {
       image: true,
       description: true,
@@ -80,6 +86,15 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+            },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              admin: {
+                description:
+                  'Short summary shown on blog cards. Falls back to the SEO meta description when empty.',
+              },
+              maxLength: 280,
             },
             {
               name: 'content',
@@ -129,6 +144,35 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'categories',
             },
+            {
+              name: 'hashtags',
+              type: 'text',
+              hasMany: true,
+              admin: {
+                position: 'sidebar',
+                description:
+                  'Add hashtags (e.g. cybersecurity, webdevelopment). Type one and press Enter, repeat for each. The leading # is optional — the post becomes searchable and filterable by every hashtag you add.',
+              },
+              hooks: {
+                // Normalize on the way in so "#Cyber Security" and "cybersecurity"
+                // are stored identically and match reliably. Stored without the `#`.
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!Array.isArray(value)) return value
+                    const seen = new Set<string>()
+                    const out: string[] = []
+                    for (const raw of value) {
+                      const tag = normalizeHashtag(raw)
+                      if (tag && !seen.has(tag)) {
+                        seen.add(tag)
+                        out.push(tag)
+                      }
+                    }
+                    return out
+                  },
+                ],
+              },
+            },
           ],
           label: 'Meta',
         },
@@ -160,6 +204,17 @@ export const Posts: CollectionConfig<'posts'> = {
           ],
         },
       ],
+    },
+    {
+      name: 'featured',
+      type: 'checkbox',
+      label: 'Feature this post',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description:
+          'When enabled, this post is highlighted as the "Featured Article" on the /blog page. The most recent featured post wins.',
+      },
     },
     {
       name: 'publishedAt',

@@ -4,6 +4,7 @@ import type { Media, Page, Post, Project, Service, Config } from '../payload-typ
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { SITE_DESCRIPTION, titleWithSuffix } from './brand'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
@@ -21,28 +22,43 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | Partial<Service> | Partial<Project> | null
+  /** Absolute canonical URL for this document (also used as the OG url). */
+  url?: string
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, url } = args
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+  const title = titleWithSuffix(doc?.meta?.title)
+  const description = doc?.meta?.description || SITE_DESCRIPTION
+
+  // Dates are only present on dated content (posts); used for article freshness signals.
+  const publishedAt =
+    doc && 'publishedAt' in doc && typeof doc.publishedAt === 'string'
+      ? doc.publishedAt
+      : undefined
+  const modifiedAt =
+    doc && 'updatedAt' in doc && typeof doc.updatedAt === 'string' ? doc.updatedAt : undefined
+
+  const canonical = url ?? getServerSideURL()
 
   return {
-    description: doc?.meta?.description,
+    description,
+    alternates: {
+      canonical,
+    },
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
+      description,
+      images: ogImage ? [{ url: ogImage }] : undefined,
       title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+      url: canonical,
+      ...(publishedAt
+        ? {
+            type: 'article',
+            publishedTime: publishedAt,
+            modifiedTime: modifiedAt ?? publishedAt,
+          }
+        : {}),
     }),
     title,
   }

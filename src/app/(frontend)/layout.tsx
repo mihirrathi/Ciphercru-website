@@ -15,6 +15,9 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, TWITTER_HANDLE } from '@/utilities/brand'
+import { JsonLd } from '@/components/JsonLd'
+import { organizationSchema, websiteSchema } from '@/utilities/structuredData'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -27,6 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <Providers>
           {/* <AdminBar
             adminBarProps={{
@@ -45,9 +49,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: {
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  alternates: {
+    types: {
+      'application/rss+xml': '/feed.xml',
+    },
+  },
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    creator: TWITTER_HANDLE,
+    site: TWITTER_HANDLE,
   },
 }

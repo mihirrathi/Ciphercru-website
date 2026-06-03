@@ -13,9 +13,10 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { titleWithSuffix } from '@/utilities/brand'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return titleWithSuffix(doc?.title)
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {

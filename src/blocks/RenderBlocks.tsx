@@ -7,6 +7,7 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContactSectionBlock } from '@/blocks/ContactSection/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { CtaBannerBlock } from '@/blocks/CtaBanner/Component'
 import { FAQBlock } from '@/blocks/FAQ/Component'
 import { FeaturesBlock } from '@/blocks/Features/Component'
 import { FormBlock } from '@/blocks/Form/Component'
@@ -14,8 +15,12 @@ import { LandingHeroBlock } from '@/blocks/LandingHero/Component'
 import { LandingHeroV2Block } from '@/blocks/LandingHeroV2/Component'
 import { LogoMarqueeBlock } from '@/blocks/LogoMarquee/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ProcessTimelineBlock } from '@/blocks/ProcessTimeline/Component'
+import { ServiceCardsGridBlock } from '@/blocks/ServiceCardsGrid/Component'
+import { ServiceHeroBlock } from '@/blocks/ServiceHero/Component'
 import { StatsBlock } from '@/blocks/Stats/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
+import { WhyChooseUsBlock } from '@/blocks/WhyChooseUs/Component'
 
 // Block types temporarily hidden site-wide. Remove an entry here to show it again.
 const HIDDEN_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> = ['landingHero']
@@ -26,6 +31,7 @@ const blockComponents = {
   contactSection: ContactSectionBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  ctaBanner: CtaBannerBlock,
   faq: FAQBlock,
   features: FeaturesBlock,
   formBlock: FormBlock,
@@ -33,8 +39,12 @@ const blockComponents = {
   landingHeroV2: LandingHeroV2Block,
   logoMarquee: LogoMarqueeBlock,
   mediaBlock: MediaBlock,
+  processTimeline: ProcessTimelineBlock,
+  serviceCardsGrid: ServiceCardsGridBlock,
+  serviceHero: ServiceHeroBlock,
   stats: StatsBlock,
   testimonials: TestimonialsBlock,
+  whyChooseUs: WhyChooseUsBlock,
 }
 
 export const RenderBlocks: React.FC<{

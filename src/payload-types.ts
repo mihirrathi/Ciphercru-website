@@ -117,11 +117,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'portfolio-page': PortfolioPage;
+    'blog-page': BlogPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'portfolio-page': PortfolioPageSelect<false> | PortfolioPageSelect<true>;
+    'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -216,6 +218,11 @@ export interface Page {
     media?: (string | null) | Media;
   };
   layout: (
+    | ServiceHeroBlock
+    | ServiceCardsGridBlock
+    | WhyChooseUsBlock
+    | ProcessTimelineBlock
+    | CtaBannerBlock
     | LandingHeroBlock
     | LandingHeroV2Block
     | LogoMarqueeBlock
@@ -257,6 +264,10 @@ export interface Post {
   id: string;
   title: string;
   heroImage?: (string | null) | Media;
+  /**
+   * Short summary shown on blog cards. Falls back to the SEO meta description when empty.
+   */
+  excerpt?: string | null;
   content: {
     root: {
       type: string;
@@ -274,6 +285,10 @@ export interface Post {
   };
   relatedPosts?: (string | Post)[] | null;
   categories?: (string | Category)[] | null;
+  /**
+   * Add hashtags (e.g. cybersecurity, webdevelopment). Type one and press Enter, repeat for each. The leading # is optional — the post becomes searchable and filterable by every hashtag you add.
+   */
+  hashtags?: string[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -282,6 +297,10 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
   };
+  /**
+   * When enabled, this post is highlighted as the "Featured Article" on the /blog page. The most recent featured post wins.
+   */
+  featured?: boolean | null;
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
   populatedAuthors?:
@@ -306,7 +325,10 @@ export interface Post {
 export interface Media {
   id: string;
   cloudinaryPublicId?: string | null;
-  alt?: string | null;
+  /**
+   * Describe the image for screen readers and image SEO (e.g. "CipherCru engineer reviewing a security dashboard").
+   */
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -536,6 +558,11 @@ export interface Service {
     media?: (string | null) | Media;
   };
   layout: (
+    | ServiceHeroBlock
+    | ServiceCardsGridBlock
+    | WhyChooseUsBlock
+    | ProcessTimelineBlock
+    | CtaBannerBlock
     | LandingHeroBlock
     | LogoMarqueeBlock
     | StatsBlock
@@ -870,6 +897,434 @@ export interface Project {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceHeroBlock".
+ */
+export interface ServiceHeroBlock {
+  /**
+   * e.g. Home › Services › Web Development
+   */
+  breadcrumbs?:
+    | {
+        label: string;
+        /**
+         * Leave empty for the last (current) crumb.
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Main heading, e.g. "Web Development Services".
+   */
+  title: string;
+  /**
+   * Short paragraph below the title.
+   */
+  description?: string | null;
+  /**
+   * Small feature pills shown under the description (e.g. Custom Solutions).
+   */
+  highlights?:
+    | {
+        icon?:
+          | (
+              | 'code'
+              | 'codeSquare'
+              | 'shoppingCart'
+              | 'monitor'
+              | 'gauge'
+              | 'layoutGrid'
+              | 'wrench'
+              | 'smartphone'
+              | 'cloud'
+              | 'shieldCheck'
+              | 'lock'
+              | 'cpu'
+              | 'brain'
+              | 'rocket'
+              | 'sparkles'
+              | 'smile'
+              | 'users'
+              | 'star'
+              | 'trophy'
+              | 'lifeBuoy'
+              | 'headphones'
+              | 'clipboardList'
+              | 'pencilRuler'
+              | 'flaskConical'
+              | 'send'
+              | 'globe'
+              | 'database'
+              | 'server'
+              | 'box'
+              | 'zap'
+            )
+          | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Call-to-action buttons shown under the highlight pills.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown on the right side over the brand-color hero panel.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Small white tiles shown beneath the hero image (e.g. HTML, CSS, JS, React).
+   */
+  techStack?:
+    | {
+        logo: string | Media;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceCardsGridBlock".
+ */
+export interface ServiceCardsGridBlock {
+  eyebrow?: string | null;
+  heading: string;
+  columns?: ('2' | '3') | null;
+  cards?:
+    | {
+        icon?:
+          | (
+              | 'code'
+              | 'codeSquare'
+              | 'shoppingCart'
+              | 'monitor'
+              | 'gauge'
+              | 'layoutGrid'
+              | 'wrench'
+              | 'smartphone'
+              | 'cloud'
+              | 'shieldCheck'
+              | 'lock'
+              | 'cpu'
+              | 'brain'
+              | 'rocket'
+              | 'sparkles'
+              | 'smile'
+              | 'users'
+              | 'star'
+              | 'trophy'
+              | 'lifeBuoy'
+              | 'headphones'
+              | 'clipboardList'
+              | 'pencilRuler'
+              | 'flaskConical'
+              | 'send'
+              | 'globe'
+              | 'database'
+              | 'server'
+              | 'box'
+              | 'zap'
+            )
+          | null;
+        title: string;
+        description: string;
+        /**
+         * Adds a "Learn More →" link at the bottom of the card.
+         */
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviceCardsGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseUsBlock".
+ */
+export interface WhyChooseUsBlock {
+  eyebrow?: string | null;
+  heading: string;
+  description?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: 'default' | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
+        icon?:
+          | (
+              | 'code'
+              | 'codeSquare'
+              | 'shoppingCart'
+              | 'monitor'
+              | 'gauge'
+              | 'layoutGrid'
+              | 'wrench'
+              | 'smartphone'
+              | 'cloud'
+              | 'shieldCheck'
+              | 'lock'
+              | 'cpu'
+              | 'brain'
+              | 'rocket'
+              | 'sparkles'
+              | 'smile'
+              | 'users'
+              | 'star'
+              | 'trophy'
+              | 'lifeBuoy'
+              | 'headphones'
+              | 'clipboardList'
+              | 'pencilRuler'
+              | 'flaskConical'
+              | 'send'
+              | 'globe'
+              | 'database'
+              | 'server'
+              | 'box'
+              | 'zap'
+            )
+          | null;
+        /**
+         * e.g. "150+", "98%", "24/7"
+         */
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whyChooseUs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTimelineBlock".
+ */
+export interface ProcessTimelineBlock {
+  eyebrow?: string | null;
+  heading: string;
+  /**
+   * Numbered automatically — order them in this list.
+   */
+  steps?:
+    | {
+        icon?:
+          | (
+              | 'code'
+              | 'codeSquare'
+              | 'shoppingCart'
+              | 'monitor'
+              | 'gauge'
+              | 'layoutGrid'
+              | 'wrench'
+              | 'smartphone'
+              | 'cloud'
+              | 'shieldCheck'
+              | 'lock'
+              | 'cpu'
+              | 'brain'
+              | 'rocket'
+              | 'sparkles'
+              | 'smile'
+              | 'users'
+              | 'star'
+              | 'trophy'
+              | 'lifeBuoy'
+              | 'headphones'
+              | 'clipboardList'
+              | 'pencilRuler'
+              | 'flaskConical'
+              | 'send'
+              | 'globe'
+              | 'database'
+              | 'server'
+              | 'box'
+              | 'zap'
+            )
+          | null;
+        /**
+         * e.g. "Discovery". Number prefix is added automatically.
+         */
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBannerBlock".
+ */
+export interface CtaBannerBlock {
+  icon?:
+    | (
+        | 'code'
+        | 'codeSquare'
+        | 'shoppingCart'
+        | 'monitor'
+        | 'gauge'
+        | 'layoutGrid'
+        | 'wrench'
+        | 'smartphone'
+        | 'cloud'
+        | 'shieldCheck'
+        | 'lock'
+        | 'cpu'
+        | 'brain'
+        | 'rocket'
+        | 'sparkles'
+        | 'smile'
+        | 'users'
+        | 'star'
+        | 'trophy'
+        | 'lifeBuoy'
+        | 'headphones'
+        | 'clipboardList'
+        | 'pencilRuler'
+        | 'flaskConical'
+        | 'send'
+        | 'globe'
+        | 'database'
+        | 'server'
+        | 'box'
+        | 'zap'
+      )
+    | null;
+  /**
+   * e.g. "Ready to Build Your Next Website?"
+   */
+  heading: string;
+  subheading?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBanner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2348,6 +2803,11 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        serviceHero?: T | ServiceHeroBlockSelect<T>;
+        serviceCardsGrid?: T | ServiceCardsGridBlockSelect<T>;
+        whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
+        processTimeline?: T | ProcessTimelineBlockSelect<T>;
+        ctaBanner?: T | CtaBannerBlockSelect<T>;
         landingHero?: T | LandingHeroBlockSelect<T>;
         landingHeroV2?: T | LandingHeroV2BlockSelect<T>;
         logoMarquee?: T | LogoMarqueeBlockSelect<T>;
@@ -2376,6 +2836,160 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceHeroBlock_select".
+ */
+export interface ServiceHeroBlockSelect<T extends boolean = true> {
+  breadcrumbs?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  title?: T;
+  description?: T;
+  highlights?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  image?: T;
+  techStack?:
+    | T
+    | {
+        logo?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiceCardsGridBlock_select".
+ */
+export interface ServiceCardsGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  columns?: T;
+  cards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyChooseUsBlock_select".
+ */
+export interface WhyChooseUsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        icon?: T;
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessTimelineBlock_select".
+ */
+export interface ProcessTimelineBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  steps?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBannerBlock_select".
+ */
+export interface CtaBannerBlockSelect<T extends boolean = true> {
+  icon?: T;
+  heading?: T;
+  subheading?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2803,9 +3417,11 @@ export interface FAQBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  excerpt?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
+  hashtags?: T;
   meta?:
     | T
     | {
@@ -2813,6 +3429,7 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  featured?: T;
   publishedAt?: T;
   authors?: T;
   populatedAuthors?:
@@ -2860,6 +3477,11 @@ export interface ServicesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        serviceHero?: T | ServiceHeroBlockSelect<T>;
+        serviceCardsGrid?: T | ServiceCardsGridBlockSelect<T>;
+        whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
+        processTimeline?: T | ProcessTimelineBlockSelect<T>;
+        ctaBanner?: T | CtaBannerBlockSelect<T>;
         landingHero?: T | LandingHeroBlockSelect<T>;
         logoMarquee?: T | LogoMarqueeBlockSelect<T>;
         stats?: T | StatsBlockSelect<T>;
@@ -3738,6 +4360,46 @@ export interface PortfolioPage {
   createdAt?: string | null;
 }
 /**
+ * Controls the hero, sidebar widgets, popular posts, and newsletter card on the /blog page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page".
+ */
+export interface BlogPage {
+  id: string;
+  eyebrow?: string | null;
+  heading?: string | null;
+  subtitle?: string | null;
+  /**
+   * Used as a subtle right-side image behind the gradient. Leave empty for a plain gradient.
+   */
+  heroImage?: (string | null) | Media;
+  searchPlaceholder?: string | null;
+  categoryPlaceholder?: string | null;
+  featuredHeading?: string | null;
+  allArticlesHeading?: string | null;
+  categoriesHeading?: string | null;
+  allCategoriesLabel?: string | null;
+  postsPerPage?: number | null;
+  popularHeading?: string | null;
+  /**
+   * Pick the posts shown in the "Popular Posts" sidebar widget. Order matters.
+   */
+  popularPosts?: (string | Post)[] | null;
+  newsletterEnabled?: boolean | null;
+  newsletterHeading?: string | null;
+  newsletterText?: string | null;
+  newsletterPlaceholder?: string | null;
+  newsletterButtonLabel?: string | null;
+  /**
+   * POST endpoint that receives `{ email }`. Leave blank to use a mailto: link or a placeholder no-op.
+   */
+  newsletterEndpoint?: string | null;
+  noResultsText?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3901,6 +4563,35 @@ export interface PortfolioPageSelect<T extends boolean = true> {
   authorImage?: T;
   rating?: T;
   searchPlaceholder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page_select".
+ */
+export interface BlogPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  heroImage?: T;
+  searchPlaceholder?: T;
+  categoryPlaceholder?: T;
+  featuredHeading?: T;
+  allArticlesHeading?: T;
+  categoriesHeading?: T;
+  allCategoriesLabel?: T;
+  postsPerPage?: T;
+  popularHeading?: T;
+  popularPosts?: T;
+  newsletterEnabled?: T;
+  newsletterHeading?: T;
+  newsletterText?: T;
+  newsletterPlaceholder?: T;
+  newsletterButtonLabel?: T;
+  newsletterEndpoint?: T;
+  noResultsText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
