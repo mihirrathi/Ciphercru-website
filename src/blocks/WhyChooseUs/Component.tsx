@@ -5,6 +5,7 @@ import type { WhyChooseUsBlock as WhyChooseUsBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
 import { AnimatedNumber } from '@/components/AnimatedNumber'
+import { Reveal } from '@/components/Reveal'
 import { Icon } from '../_shared/Icon'
 import type { IconKey } from '../_shared/iconOptions'
 
@@ -24,8 +25,8 @@ export const WhyChooseUsBlock: React.FC<WhyChooseUsBlockProps> = ({
         : 'grid-cols-2 lg:grid-cols-4'
 
   return (
-    <section className="container py-8 lg:py-12">
-      <div className="rounded-3xl bg-linear-to-br from-blue-50 via-blue-50/60 to-white border border-blue-100 p-8 lg:p-12 shadow-sm">
+    <section className="container py-6 lg:py-8">
+      <Reveal className="rounded-3xl bg-linear-to-br from-blue-50 via-blue-50/60 to-white border border-blue-100 p-8 lg:p-12 shadow-sm">
         <div className="grid items-center gap-10 lg:grid-cols-[5fr_7fr]">
           {/* LEFT — content */}
           <div>
@@ -62,7 +63,11 @@ export const WhyChooseUsBlock: React.FC<WhyChooseUsBlockProps> = ({
           {Array.isArray(stats) && stats.length > 0 && (
             <div className={cn('grid gap-6 lg:gap-8', statsGrid)}>
               {stats.map((s, i) => (
-                <div key={i} className="flex flex-col items-center text-center">
+                <Reveal
+                  key={i}
+                  delay={i * 0.08}
+                  className="flex flex-col items-center text-center"
+                >
                   <div className="flex h-12 w-12 items-center justify-center mb-3">
                     <Icon
                       name={s.icon as IconKey | null | undefined}
@@ -73,15 +78,15 @@ export const WhyChooseUsBlock: React.FC<WhyChooseUsBlockProps> = ({
                     value={s.value}
                     className="block text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-brand tabular-nums leading-none"
                   />
-                  <div className="mt-2 text-xs lg:text-sm font-medium text-gray-600 leading-snug max-w-[10rem]">
+                  <div className="mt-2 text-xs lg:text-sm font-medium text-gray-600 leading-snug max-w-40">
                     {s.label}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           )}
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }

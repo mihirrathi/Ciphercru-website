@@ -87,7 +87,7 @@ export const RenderBlocks: React.FC<{
               )
 
               return (
-                <div className="mt-8 lg:mt-16 first:mt-0" key={index}>
+                <div key={index}>
                   {SELF_ANIMATED_BLOCK_TYPES.includes(blockType) ? (
                     rendered
                   ) : (

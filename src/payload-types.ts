@@ -1068,9 +1068,9 @@ export interface ServiceCardsGridBlock {
         title: string;
         description: string;
         /**
-         * Adds a "Learn More →" link at the bottom of the card.
+         * Optional. If a label is set, a "Learn More →" link is shown at the bottom of the card.
          */
-        link: {
+        link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -1091,7 +1091,7 @@ export interface ServiceCardsGridBlock {
                 value: string | Project;
               } | null);
           url?: string | null;
-          label: string;
+          label?: string | null;
         };
         id?: string | null;
       }[]

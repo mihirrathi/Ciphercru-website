@@ -3,6 +3,7 @@ import React from 'react'
 import type { ProcessTimelineBlock as ProcessTimelineBlockProps } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
+import { Reveal } from '@/components/Reveal'
 import { Icon } from '../_shared/Icon'
 import type { IconKey } from '../_shared/iconOptions'
 
@@ -25,8 +26,8 @@ export const ProcessTimelineBlock: React.FC<ProcessTimelineBlockProps> = ({
   const lgCols = lgColsForCount[Math.min(list.length, 8)] || 'lg:grid-cols-6'
 
   return (
-    <section className="container py-16 lg:py-24">
-      <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <section className="container py-10 lg:py-16">
+      <Reveal className="text-center max-w-3xl mx-auto mb-8 lg:mb-12">
         {eyebrow && (
           <div className="text-xs sm:text-sm uppercase tracking-[0.18em] text-brand font-semibold mb-3">
             {eyebrow}
@@ -37,7 +38,7 @@ export const ProcessTimelineBlock: React.FC<ProcessTimelineBlockProps> = ({
             {heading}
           </h2>
         )}
-      </div>
+      </Reveal>
 
       {list.length > 0 && (
         <div className="relative">
@@ -54,7 +55,12 @@ export const ProcessTimelineBlock: React.FC<ProcessTimelineBlockProps> = ({
             )}
           >
             {list.map((step, i) => (
-              <li key={i} className="relative flex flex-col items-center text-center px-2">
+              <Reveal
+                as="li"
+                key={i}
+                delay={i * 0.08}
+                className="relative flex flex-col items-center text-center px-2"
+              >
                 <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-blue-300/40 ring-4 ring-white">
                   <Icon
                     name={step.icon as IconKey | null | undefined}
@@ -69,7 +75,7 @@ export const ProcessTimelineBlock: React.FC<ProcessTimelineBlockProps> = ({
                     {step.description}
                   </p>
                 )}
-              </li>
+              </Reveal>
             ))}
           </ol>
         </div>

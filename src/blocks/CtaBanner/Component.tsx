@@ -4,6 +4,7 @@ import type { CtaBannerBlock as CtaBannerBlockProps } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
+import { Reveal } from '@/components/Reveal'
 import { Icon } from '../_shared/Icon'
 import type { IconKey } from '../_shared/iconOptions'
 
@@ -14,8 +15,8 @@ export const CtaBannerBlock: React.FC<CtaBannerBlockProps> = ({
   links,
 }) => {
   return (
-    <section className="container py-12 lg:py-16">
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand via-blue-600 to-blue-700 text-white px-6 py-8 lg:px-12 lg:py-10 shadow-xl shadow-blue-300/30">
+    <section className="container py-8 lg:py-12">
+      <Reveal className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand via-blue-600 to-blue-700 text-white px-6 py-8 lg:px-12 lg:py-10 shadow-xl shadow-blue-300/30">
         {/* decorative pattern */}
         <div
           aria-hidden
@@ -62,7 +63,7 @@ export const CtaBannerBlock: React.FC<CtaBannerBlockProps> = ({
             </div>
           )}
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }

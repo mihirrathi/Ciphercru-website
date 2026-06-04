@@ -32,12 +32,12 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
         className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_15%_10%,rgba(255,255,255,0.18),transparent_45%),radial-gradient(circle_at_90%_85%,rgba(0,0,0,0.18),transparent_50%)]"
       />
 
-      <div className="container relative pt-10 pb-20 lg:pt-14 lg:pb-28">
+      <div className="container relative pt-6 pb-20 lg:pt-8 lg:pb-28">
         {Array.isArray(breadcrumbs) && breadcrumbs.length > 0 && (
           <Reveal>
             <nav
               aria-label="Breadcrumb"
-              className="flex flex-wrap items-center gap-1.5 text-sm text-white/80 mb-10"
+              className="flex flex-wrap items-center gap-1.5 text-sm text-white/80 mb-6 lg:mb-8"
             >
             {breadcrumbs.map((c, i) => {
               const isLast = i === breadcrumbs.length - 1
@@ -124,19 +124,17 @@ export const ServiceHeroBlock: React.FC<ServiceHeroBlockProps> = ({
           {/* RIGHT — image + tech tiles */}
           {image && (
             <Reveal direction="left" delay={0.2} className="relative">
-              <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/20 shadow-2xl shadow-blue-900/40">
-                <Media
-                  resource={image}
-                  imgClassName="w-full h-auto object-cover aspect-[16/11]"
-                />
-              </div>
+              <Media
+                resource={image}
+                imgClassName="relative w-full h-auto object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.35)]"
+              />
 
               {Array.isArray(techStack) && techStack.length > 0 && (
-                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <div className="mt-6 lg:-mt-4 relative flex flex-wrap justify-center gap-3">
                   {techStack.map((t, i) => (
                     <div
                       key={i}
-                      className="flex h-14 w-14 items-center justify-center rounded-xl bg-white shadow-lg shadow-blue-900/20 p-2"
+                      className="flex h-14 w-14 items-center justify-center rounded-xl bg-white shadow-lg shadow-blue-900/30 p-2"
                       title={t.label || undefined}
                     >
                       <Media

@@ -1,6 +1,5 @@
 import type { Block } from 'payload'
 
-import { link } from '../../fields/link'
 import { iconOptions } from '../_shared/iconOptions'
 
 export const ServiceCardsGrid: Block = {
@@ -61,15 +60,73 @@ export const ServiceCardsGrid: Block = {
           type: 'textarea',
           required: true,
         },
-        link({
-          appearances: false,
-          overrides: {
-            label: 'Learn More link (optional)',
-            admin: {
-              description: 'Adds a "Learn More →" link at the bottom of the card.',
-            },
+        {
+          name: 'link',
+          type: 'group',
+          label: 'Learn More link (optional)',
+          admin: {
+            description:
+              'Optional. If a label is set, a "Learn More →" link is shown at the bottom of the card.',
+            hideGutter: true,
           },
-        }),
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'type',
+                  type: 'radio',
+                  defaultValue: 'reference',
+                  admin: { layout: 'horizontal', width: '50%' },
+                  options: [
+                    { label: 'Internal link', value: 'reference' },
+                    { label: 'Custom URL', value: 'custom' },
+                  ],
+                },
+                {
+                  name: 'newTab',
+                  type: 'checkbox',
+                  label: 'Open in new tab',
+                  admin: {
+                    width: '50%',
+                    style: { alignSelf: 'flex-end' },
+                  },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'reference',
+                  type: 'relationship',
+                  label: 'Document to link to',
+                  relationTo: ['pages', 'posts', 'services', 'projects'],
+                  admin: {
+                    width: '50%',
+                    condition: (_, siblingData) => siblingData?.type === 'reference',
+                  },
+                },
+                {
+                  name: 'url',
+                  type: 'text',
+                  label: 'Custom URL',
+                  admin: {
+                    width: '50%',
+                    condition: (_, siblingData) => siblingData?.type === 'custom',
+                  },
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  label: 'Label',
+                  defaultValue: 'Learn More',
+                  admin: { width: '50%' },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

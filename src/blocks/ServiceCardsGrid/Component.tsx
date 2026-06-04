@@ -23,8 +23,8 @@ export const ServiceCardsGridBlock: React.FC<ServiceCardsGridBlockProps> = ({
   const grid = colGrid[columns || '3']
 
   return (
-    <section className="container py-16 lg:py-24">
-      <Reveal className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <section className="container py-10 lg:py-16">
+      <Reveal className="text-center max-w-3xl mx-auto mb-8 lg:mb-12">
         {eyebrow && (
           <div className="text-xs sm:text-sm uppercase tracking-[0.18em] text-brand font-semibold mb-3">
             {eyebrow}
