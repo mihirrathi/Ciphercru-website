@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { AboutHero } from '../../blocks/AboutHero/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
@@ -19,6 +20,7 @@ import { ProcessTimeline } from '../../blocks/ProcessTimeline/config'
 import { ServiceCardsGrid } from '../../blocks/ServiceCardsGrid/config'
 import { ServiceHero } from '../../blocks/ServiceHero/config'
 import { Stats } from '../../blocks/Stats/config'
+import { Team } from '../../blocks/Team/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { WhyChooseUs } from '../../blocks/WhyChooseUs/config'
 import { hero } from '@/heros/config'
@@ -87,6 +89,7 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                AboutHero,
                 ServiceHero,
                 ServiceCardsGrid,
                 WhyChooseUs,
@@ -104,6 +107,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 ContactSection,
                 AboutSection,
+                Team,
                 Testimonials,
                 FAQ,
               ],

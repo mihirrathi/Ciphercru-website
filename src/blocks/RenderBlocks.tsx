@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
+import { AboutHeroBlock } from '@/blocks/AboutHero/Component'
 import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -19,6 +20,7 @@ import { ProcessTimelineBlock } from '@/blocks/ProcessTimeline/Component'
 import { ServiceCardsGridBlock } from '@/blocks/ServiceCardsGrid/Component'
 import { ServiceHeroBlock } from '@/blocks/ServiceHero/Component'
 import { StatsBlock } from '@/blocks/Stats/Component'
+import { TeamBlock } from '@/blocks/Team/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { WhyChooseUsBlock } from '@/blocks/WhyChooseUs/Component'
 import { Reveal } from '@/components/Reveal'
@@ -35,10 +37,13 @@ const SELF_ANIMATED_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> =
   'logoMarquee',
   'serviceCardsGrid',
   'features',
+  'aboutHero',
   'aboutSection',
+  'team',
 ]
 
 const blockComponents = {
+  aboutHero: AboutHeroBlock,
   aboutSection: AboutSectionBlock,
   archive: ArchiveBlock,
   contactSection: ContactSectionBlock,
@@ -56,6 +61,7 @@ const blockComponents = {
   serviceCardsGrid: ServiceCardsGridBlock,
   serviceHero: ServiceHeroBlock,
   stats: StatsBlock,
+  team: TeamBlock,
   testimonials: TestimonialsBlock,
   whyChooseUs: WhyChooseUsBlock,
 }

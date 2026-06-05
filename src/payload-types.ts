@@ -218,6 +218,7 @@ export interface Page {
     media?: (string | null) | Media;
   };
   layout: (
+    | AboutHeroBlock
     | ServiceHeroBlock
     | ServiceCardsGridBlock
     | WhyChooseUsBlock
@@ -235,6 +236,7 @@ export interface Page {
     | FormBlock
     | ContactSectionBlock
     | AboutSectionBlock
+    | TeamBlock
     | TestimonialsBlock
     | FAQBlock
   )[];
@@ -2354,6 +2356,59 @@ export interface FAQBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHeroBlock".
+ */
+export interface AboutHeroBlock {
+  /**
+   * e.g. "About CipherCru"
+   */
+  eyebrow?: string | null;
+  /**
+   * Big display headline. Press Enter for a line break. Wrap a word in **double asterisks** to colour it brand blue. Example: "We engineer\n**cyber-resilience**\nat scale."
+   */
+  heading: string;
+  /**
+   * Short paragraph below the heading.
+   */
+  subheading?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: string | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: string | Project;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LandingHeroV2Block".
  */
 export interface LandingHeroV2Block {
@@ -2491,6 +2546,35 @@ export interface LandingHeroV2Block {
   id?: string | null;
   blockName?: string | null;
   blockType: 'landingHeroV2';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock".
+ */
+export interface TeamBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  columns?: ('2' | '3' | '4') | null;
+  members?:
+    | {
+        /**
+         * Square photo works best. Leave empty to show initials.
+         */
+        photo?: (string | null) | Media;
+        name: string;
+        role: string;
+        bio?: string | null;
+        /**
+         * Makes the photo / name link to their profile.
+         */
+        linkedin?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'team';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2803,6 +2887,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        aboutHero?: T | AboutHeroBlockSelect<T>;
         serviceHero?: T | ServiceHeroBlockSelect<T>;
         serviceCardsGrid?: T | ServiceCardsGridBlockSelect<T>;
         whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
@@ -2820,6 +2905,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         contactSection?: T | ContactSectionBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
+        team?: T | TeamBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
         faq?: T | FAQBlockSelect<T>;
       };
@@ -2836,6 +2922,32 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHeroBlock_select".
+ */
+export interface AboutHeroBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3326,6 +3438,28 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         value?: T;
         label?: T;
         caption?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock_select".
+ */
+export interface TeamBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  columns?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        bio?: T;
+        linkedin?: T;
         id?: T;
       };
   id?: T;
