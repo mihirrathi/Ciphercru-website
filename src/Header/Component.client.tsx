@@ -49,8 +49,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     >
       <div
         className={cn(
-          'max-w-7xl mx-auto px-6 flex justify-between items-center transition-[padding] duration-300',
-          isScrolled ? 'py-2' : 'py-4',
+          'max-w-7xl mx-auto px-6 flex justify-between items-center py-2',
         )}
       >
 
@@ -59,10 +58,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <Logo
             loading="eager"
             priority="high"
-            className={cn(
-              'w-auto transition-[height] duration-300',
-              isScrolled ? 'h-12' : 'h-20',
-            )}
+            className={cn('w-auto h-12')}
           />
         </Link>
 
@@ -71,17 +67,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
         {/* Right Side - Login + CTA Button */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className={cn(
-              'text-sm font-medium transition-colors',
-              darkText
-                ? 'text-gray-600 hover:text-brand'
-                : 'text-white/90 hover:text-white drop-shadow-sm',
-            )}
-          >
-            Login
-          </Link>
           <Link
             href="/contact-us"
             className="group inline-flex items-center gap-2 bg-brand hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-full shadow-md shadow-blue-900/30 hover:shadow-lg hover:shadow-blue-900/40 transition-all"

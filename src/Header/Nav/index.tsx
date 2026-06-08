@@ -245,15 +245,19 @@ export const HeaderNav: React.FC<{ data: HeaderType; darkText?: boolean }> = ({
             {...item.link}
             appearance="link"
             className={cn(
-              'text-sm font-medium transition-colors',
+              'text-sm font-medium transition-colors rounded-none focus-visible:ring-0 hover:no-underline',
+              'border-b-2 pb-0.5',
               hoverLinkClass,
               isActive
                 ? cn(
                     activeLinkClass,
-                    'border-b-2 pb-0.5',
                     darkText ? 'border-blue-600' : 'border-white',
                   )
-                : idleLinkClass,
+                : cn(
+                    idleLinkClass,
+                    'border-transparent',
+                    darkText ? 'hover:border-blue-600' : 'hover:border-white',
+                  ),
             )}
           />
         )
