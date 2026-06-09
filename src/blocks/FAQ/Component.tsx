@@ -255,7 +255,7 @@ export const FAQBlock: React.FC<FAQBlockProps & { id?: string }> = ({
 
         {hasFeatures && (
           <div className="mt-16 lg:mt-20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
               {features!.map((feature, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="shrink-0 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-brand text-white flex items-center justify-center shadow-md shadow-blue-300/40">

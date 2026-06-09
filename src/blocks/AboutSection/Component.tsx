@@ -216,12 +216,12 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                       delay={0.3}
                       className={cn(
                         'absolute -bottom-8 left-4 right-4 sm:left-8 sm:right-8 lg:-bottom-10',
-                        'rounded-2xl bg-brand text-white px-5 py-5 sm:px-6 sm:py-6',
+                        'rounded-2xl bg-blue-50 text-brand px-5 py-5 sm:px-6 sm:py-6',
                         'shadow-xl shadow-blue-500/30',
                         'flex items-center gap-4',
                       )}
                     >
-                      <div className="shrink-0 w-14 h-14 rounded-full bg-white text-brand flex items-center justify-center shadow-inner">
+                      <div className="shrink-0 w-14 h-14 rounded-full bg-brand text-white flex items-center justify-center shadow-inner">
                         <Icon name={floatingCard?.icon} className="w-7 h-7" />
                       </div>
                       <p className="text-sm sm:text-base lg:text-lg font-medium leading-snug">

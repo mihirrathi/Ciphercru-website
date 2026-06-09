@@ -135,7 +135,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; darkText?: boolean }> = ({
 
               {isOpen && (
                 <div
-                  className="absolute left-0 right-0 top-full pt-3 z-50 px-6"
+                  className="absolute left-0 right-0 top-full z-50 px-6"
                   role="menu"
                   onMouseEnter={cancelClose}
                   onMouseLeave={closeSoon}

@@ -16,6 +16,13 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
     },
     layout: [
       {
+        blockType: 'contactHero',
+        eyebrow: 'Contact Us',
+        heading: "Let's build something **great** together.",
+        subheading:
+          'Our team of experts is ready to help you with your next project. Reach out — we typically respond within 2 business hours.',
+      },
+      {
         blockType: 'formBlock',
         enableIntro: true,
         form: contactForm,

@@ -6,6 +6,7 @@ import { AboutHeroBlock } from '@/blocks/AboutHero/Component'
 import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { ContactHeroBlock } from '@/blocks/ContactHero/Component'
 import { ContactSectionBlock } from '@/blocks/ContactSection/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { CtaBannerBlock } from '@/blocks/CtaBanner/Component'
@@ -39,6 +40,7 @@ const SELF_ANIMATED_BLOCK_TYPES: ReadonlyArray<Page['layout'][0]['blockType']> =
   'features',
   'aboutHero',
   'aboutSection',
+  'contactHero',
   'team',
 ]
 
@@ -46,6 +48,7 @@ const blockComponents = {
   aboutHero: AboutHeroBlock,
   aboutSection: AboutSectionBlock,
   archive: ArchiveBlock,
+  contactHero: ContactHeroBlock,
   contactSection: ContactSectionBlock,
   content: ContentBlock,
   cta: CallToActionBlock,

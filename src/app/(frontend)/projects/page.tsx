@@ -121,8 +121,8 @@ export default async function ProjectsIndexPage() {
                   priority
                   size="(max-width: 1024px) 100vw, 50vw"
                   htmlElement={null}
-                  pictureClassName="relative block aspect-4/3 w-full overflow-hidden rounded-2xl shadow-2xl shadow-brand/10 ring-1 ring-gray-100"
-                  imgClassName="object-cover"
+                  pictureClassName="relative block aspect-4/3 w-full"
+                  imgClassName="object-contain"
                 />
               </div>
             )}

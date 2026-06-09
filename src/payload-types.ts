@@ -219,6 +219,7 @@ export interface Page {
   };
   layout: (
     | AboutHeroBlock
+    | ContactHeroBlock
     | ServiceHeroBlock
     | ServiceCardsGridBlock
     | WhyChooseUsBlock
@@ -2409,6 +2410,27 @@ export interface AboutHeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactHeroBlock".
+ */
+export interface ContactHeroBlock {
+  /**
+   * Small label shown in the pill, e.g. "Contact Us".
+   */
+  eyebrow?: string | null;
+  /**
+   * Big display headline. Press Enter for a line break. Wrap a word in **double asterisks** to colour it brand blue. Example: "Let's build something **great** together."
+   */
+  heading: string;
+  /**
+   * Short paragraph below the heading.
+   */
+  subheading?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LandingHeroV2Block".
  */
 export interface LandingHeroV2Block {
@@ -2888,6 +2910,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         aboutHero?: T | AboutHeroBlockSelect<T>;
+        contactHero?: T | ContactHeroBlockSelect<T>;
         serviceHero?: T | ServiceHeroBlockSelect<T>;
         serviceCardsGrid?: T | ServiceCardsGridBlockSelect<T>;
         whyChooseUs?: T | WhyChooseUsBlockSelect<T>;
@@ -2946,6 +2969,17 @@ export interface AboutHeroBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactHeroBlock_select".
+ */
+export interface ContactHeroBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
   id?: T;
   blockName?: T;
 }

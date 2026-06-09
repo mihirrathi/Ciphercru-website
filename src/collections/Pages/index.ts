@@ -6,6 +6,7 @@ import { AboutHero } from '../../blocks/AboutHero/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { ContactHero } from '../../blocks/ContactHero/config'
 import { ContactSection } from '../../blocks/ContactSection/config'
 import { Content } from '../../blocks/Content/config'
 import { CtaBanner } from '../../blocks/CtaBanner/config'
@@ -90,6 +91,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 AboutHero,
+                ContactHero,
                 ServiceHero,
                 ServiceCardsGrid,
                 WhyChooseUs,
