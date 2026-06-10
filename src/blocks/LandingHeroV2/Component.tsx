@@ -86,7 +86,6 @@ export const LandingHeroV2Block: React.FC<LandingHeroV2BlockProps> = ({
   primaryCta,
   secondaryCta,
   cards,
-  stats,
   trustedByLabel,
   trustedByLogos,
 }) => {
@@ -237,28 +236,8 @@ export const LandingHeroV2Block: React.FC<LandingHeroV2BlockProps> = ({
         </div>
 
         {/* Footer */}
-        {((stats && stats.length > 0) || (trustedByLogos && trustedByLogos.length > 0)) && (
+        {trustedByLogos && trustedByLogos.length > 0 && (
           <div className="relative z-10 mt-10 flex flex-col gap-6 border-t border-gray-200 pt-5 lg:flex-row lg:items-end lg:justify-between">
-            {stats && stats.length > 0 && (
-              <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2">
-                {stats.map((s, i) => (
-                  <motion.div
-                    key={s.id ?? i}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.9 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    className="inline-flex items-baseline gap-2"
-                  >
-                    <span className="text-[26px] font-medium tracking-[-0.03em] leading-none text-gray-900">
-                      {s.value}
-                    </span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-gray-500">
-                      {s.label}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            )}
             {trustedByLogos && trustedByLogos.length > 0 && (
               <div className="text-left lg:text-right">
                 {trustedByLabel && (

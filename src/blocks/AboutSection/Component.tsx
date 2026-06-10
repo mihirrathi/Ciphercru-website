@@ -238,15 +238,23 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
 
       {/* Bottom area: stats strip */}
       {hasStats && (
-        <div className="relative bg-white">
+        <div className="relative overflow-hidden bg-linear-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.15),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.1),transparent_50%)]"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"
+          />
           <div
             className={cn(
-              'container',
+              'container relative',
               hasFloatingCard ? 'pt-20 lg:pt-24' : 'pt-16 lg:pt-20',
               'pb-16 lg:pb-20',
             )}
           >
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 divide-y lg:divide-y-0 lg:divide-x divide-gray-200">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 divide-y lg:divide-y-0 lg:divide-x divide-white/20">
               {stats!.map((stat, i) => (
                 <Reveal
                   key={i}
@@ -258,19 +266,19 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                     i > 0 && 'lg:pl-6',
                   )}
                 >
-                  <div className="shrink-0 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-blue-50 text-brand flex items-center justify-center">
+                  <div className="shrink-0 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white/10 text-white flex items-center justify-center">
                     <Icon name={stat.icon} className="w-7 h-7 lg:w-8 lg:h-8" />
                   </div>
                   <div>
                     <AnimatedNumber
                       value={stat.value}
-                      className="block text-3xl lg:text-4xl font-bold text-brand leading-none tabular-nums"
+                      className="block text-3xl lg:text-4xl font-bold leading-none tabular-nums bg-linear-to-r from-white to-blue-100 bg-clip-text text-transparent"
                     />
-                    <div className="mt-1.5 text-sm lg:text-base font-semibold text-gray-900">
+                    <div className="mt-1.5 text-sm lg:text-base font-semibold text-white">
                       {stat.label}
                     </div>
                     {stat.caption && (
-                      <div className="mt-0.5 text-xs lg:text-sm text-gray-500">
+                      <div className="mt-0.5 text-xs lg:text-sm text-blue-100">
                         {stat.caption}
                       </div>
                     )}
