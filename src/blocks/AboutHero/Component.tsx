@@ -4,6 +4,7 @@ import type { AboutHeroBlock as AboutHeroBlockProps } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 import { Reveal } from '@/components/Reveal'
 
 // Render a heading string: "\n" → line break, **word** → brand-blue highlight.
@@ -28,7 +29,13 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockProps> = ({
   heading,
   subheading,
   links,
+  media,
 }) => {
+  const mediaResource = media && typeof media === 'object' ? media : null
+  const isVideo = Boolean(mediaResource?.mimeType?.startsWith('video/'))
+  const videoUrl = isVideo ? mediaResource?.url ?? undefined : undefined
+  const hasMedia = Boolean(mediaResource)
+
   return (
     <section className="relative isolate overflow-hidden bg-white">
       {/* faint grid background, fading at top & bottom */}
@@ -56,7 +63,13 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockProps> = ({
       />
 
       <div className="container relative z-10 pt-16 pb-20 lg:pt-20 lg:pb-28">
-        <div className="max-w-3xl">
+        <div
+          className={cn(
+            'flex flex-col gap-12',
+            hasMedia && 'lg:flex-row lg:items-center lg:gap-16',
+          )}
+        >
+          <div className={cn(hasMedia ? 'lg:flex-1' : 'max-w-3xl')}>
           {eyebrow && (
             <Reveal>
               <div className="mb-7 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-brand">
@@ -105,6 +118,30 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockProps> = ({
                     />
                   )
                 })}
+              </div>
+            </Reveal>
+          )}
+          </div>
+
+          {hasMedia && (
+            <Reveal direction="left" delay={0.16} className="relative lg:flex-1">
+              <div
+                aria-hidden
+                className="absolute -inset-6 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(64,126,201,0.18),transparent_65%)] blur-2xl"
+              />
+              <div className="relative overflow-hidden rounded-3xl border border-white ring-1 ring-white/80 shadow-2xl shadow-blue-400/20">
+                {isVideo && videoUrl ? (
+                  <video
+                    className="w-full h-auto object-cover"
+                    src={videoUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <Media resource={mediaResource!} imgClassName="w-full h-auto object-cover" />
+                )}
               </div>
             </Reveal>
           )}

@@ -33,6 +33,16 @@ export const AboutHero: Block = {
       label: 'Subheading',
       admin: { description: 'Short paragraph below the heading.' },
     },
+    {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Hero media (image, GIF or MP4 — right side)',
+      admin: {
+        description:
+          'Upload an image, GIF, or MP4 video. Videos play muted and looping on the right side of the hero.',
+      },
+    },
     linkGroup({
       appearances: ['default', 'outline'],
       overrides: {

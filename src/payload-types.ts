@@ -2372,6 +2372,10 @@ export interface AboutHeroBlock {
    * Short paragraph below the heading.
    */
   subheading?: string | null;
+  /**
+   * Upload an image, GIF, or MP4 video. Videos play muted and looping on the right side of the hero.
+   */
+  media?: (string | null) | Media;
   links?:
     | {
         link: {
@@ -2954,6 +2958,7 @@ export interface AboutHeroBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   subheading?: T;
+  media?: T;
   links?:
     | T
     | {

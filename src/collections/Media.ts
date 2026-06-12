@@ -42,6 +42,9 @@ export const Media: CollectionConfig = {
     // Files are stored in Cloudinary via the cloudinaryStorage plugin in src/plugins/index.ts.
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Allow images plus video (e.g. WebM/MP4 hero loops). Sharp imageSizes below
+    // are only generated for image mimetypes; videos are uploaded as-is.
+    mimeTypes: ['image/*', 'video/*'],
     imageSizes: [
       {
         name: 'thumbnail',
